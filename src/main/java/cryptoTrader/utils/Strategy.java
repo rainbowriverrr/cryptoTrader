@@ -5,7 +5,7 @@ public class Strategy {
 	private String strategyName;
 	
 	public Strategy (String strategyName) {
-		
+		gjldkfjglasdkjglkasdjgklgj
 		this.strategyName = strategyName;
 	}
 	public static void main(String[] args) {
