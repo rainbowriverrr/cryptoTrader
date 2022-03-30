@@ -16,7 +16,7 @@ public class Authenticator implements ILogin {
 	
 	/**
 	 * Constructor reads the file containing valid username and password combinations and adds them all to userList.
-	 * @throws IOException
+	 * @throws IOException if the file is missing
 	 */
 	public Authenticator() throws IOException {
 		userList = new ArrayList<String[]>();
@@ -50,7 +50,7 @@ public class Authenticator implements ILogin {
 	/**
 	 * Get the single instance of Authenticator.
 	 * @return instance of Authenticator, creates it if it does not exist
-	 * @throws IOException
+	 * @throws IOException if the file containing usernames and passwords was missing
 	 */
 	public static Authenticator getInstance() throws IOException {
 		if (instance == null) instance = new Authenticator();
