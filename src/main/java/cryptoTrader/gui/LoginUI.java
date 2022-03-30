@@ -3,15 +3,19 @@ package cryptoTrader.gui;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import cryptoTrader.authentication.Authenticator;
+
 import javax.swing.JPasswordField;
+import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import java.awt.Container;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
 import java.io.IOException;
-import cryptoTrader.authenticator.Authenticator;
 
 /**
  * The login window where users can input their username and password.
@@ -27,7 +31,7 @@ public class LoginUI extends JFrame {
 	
 	private MainUI main; // Reference to the main UI
 	
-	public LoginUI() {
+	private LoginUI() {
 		
 		// Sets the window title.
 		super("Crypto Trading Tool");
@@ -83,14 +87,35 @@ public class LoginUI extends JFrame {
 			else submit();
 		}); // Press enter to submit or switch focus to username field if pass field is empty.
 		
+		// Buttons panel
+		JPanel buttons = new JPanel();
+		GridBagConstraints buttonsC = new GridBagConstraints();
+		buttonsC.gridx = 0;
+		buttonsC.gridy = 3;
+		buttonsC.gridwidth = 2;
+		buttonsC.insets = new Insets(10, 10, 10, 10);
+		pane.add(buttons, buttonsC);
+		
+		// Create profile button
+		JButton create = new JButton("Create new profile");
+		buttons.add(create);
+		create.addActionListener(e -> {
+			try {
+				if (userField.getText().isEmpty() || passField.getPassword().length == 0) {
+					setMessage("Please enter a username and password.", Color.RED);
+				} else if (Authenticator.getInstance().createProfile(userField.getText(), String.valueOf(passField.getPassword()))) {
+					setMessage("New profile created.", Color.BLACK);
+				} else {
+					setMessage("A profile with that username already exists.", Color.RED);
+				}
+			} catch (IOException ex) {
+				dispose();
+			}
+		});
+		
 		// Submit button
 		JButton submit = new JButton("Submit");
-		GridBagConstraints submitC = new GridBagConstraints();
-		submitC.gridx = 0;
-		submitC.gridy = 3;
-		submitC.gridwidth = 2;
-		submitC.insets = new Insets(10, 10, 10, 10);
-		pane.add(submit, submitC);
+		buttons.add(submit);
 		submit.addActionListener(e -> submit()); // Click to submit.
 		
 		// Message
@@ -99,9 +124,7 @@ public class LoginUI extends JFrame {
 		messageC.gridx = 0;
 		messageC.gridy = 4;
 		messageC.gridwidth = 2;
-		messageC.insets = new Insets(0, 10, 10, 10);
-		message.setForeground(Color.RED);
-		message.setText("Please enter a username and password.");
+		messageC.insets = new Insets(-10, 10, 10, 10);
 		message.setVisible(false);
 		pane.add(message, messageC);
 		
@@ -116,6 +139,7 @@ public class LoginUI extends JFrame {
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 	
@@ -134,24 +158,42 @@ public class LoginUI extends JFrame {
 	private void submit() {
 		// Displays message and does not submit if one of the fields is empty.
 		if (userField.getText().isEmpty() || passField.getPassword().length == 0) {
-			message.setVisible(true);
-			LoginUI.getInstance().pack();
-			return;
+			setMessage("Please enter a username and password.", Color.RED);
+		} else {
+			// Checks if the entered username and password is valid and starts or terminates the application.
+			boolean isValidLogin = false;
+			try {
+				isValidLogin = Authenticator.getInstance().checkLoginCredentials(userField.getText(), String.valueOf(passField.getPassword()));
+			} catch (IOException ex) {
+				// Thrown by Authenticator when the username and password file is missing.
+				// Terminates the application.
+				dispose();
+			}
+			if(isValidLogin) {
+				main = MainUI.getInstance();
+				main.startApp();
+				dispose(); // Close login UI.
+			} else {
+				JOptionPane.showMessageDialog(this,
+					"The username or password is incorrect.\nThe application will terminate.",
+					"Crypto Trader",
+					JOptionPane.ERROR_MESSAGE
+				);
+				dispose();
+			}
 		}
-		// Checks if the entered username and password is valid and starts or terminates the application.
-		boolean isValidLogin = false;
-		try {
-			isValidLogin = Authenticator.getInstance().checkLoginCredentials(userField.getText(), String.valueOf(passField.getPassword()));
-		} catch (IOException ex) {
-			// Thrown by Authenticator when the username and password file is missing.
-			// Terminates the application.
-			dispose();
-		}
-		if(isValidLogin) {
-			main = MainUI.getInstance();
-			main.startApp();
-		}
-		dispose();
+	}
+	
+	/**
+	 * Sets the text and colour of the message at the bottom of the login UI.
+	 * @param text text of the message
+	 * @param c colour of the text
+	 */
+	private void setMessage(String text, Color c) {
+		message.setForeground(c);
+		message.setText(text);
+		message.setVisible(true);
+		LoginUI.getInstance().pack();
 	}
 
 }
