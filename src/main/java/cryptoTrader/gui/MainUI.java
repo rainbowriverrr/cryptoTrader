@@ -62,7 +62,7 @@ public class MainUI extends JFrame implements ActionListener {
 	private MainUI() {
 
 		// Set window title
-		super("CryptoTrader");
+		super("Crypto Trader");
 
 		// Set top bar
 

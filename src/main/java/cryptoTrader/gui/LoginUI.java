@@ -3,9 +3,6 @@ package cryptoTrader.gui;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
-import cryptoTrader.authentication.Authenticator;
-
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -16,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
 import java.io.IOException;
+import cryptoTrader.authentication.Authenticator;
 
 /**
  * The login window where users can input their username and password.
@@ -34,7 +32,7 @@ public class LoginUI extends JFrame {
 	private LoginUI() {
 		
 		// Sets the window title.
-		super("Crypto Trading Tool");
+		super("Crypto Trader");
 		
 		Container pane = getContentPane(); // The content pane of the login window.
 		pane.setLayout(new GridBagLayout());
@@ -109,6 +107,7 @@ public class LoginUI extends JFrame {
 					setMessage("A profile with that username already exists.", Color.RED);
 				}
 			} catch (IOException ex) {
+				// Thrown by Authenticator when the username and password file is missing.
 				dispose();
 			}
 		});
@@ -174,7 +173,8 @@ public class LoginUI extends JFrame {
 				main.startApp();
 				dispose(); // Close login UI.
 			} else {
-				JOptionPane.showMessageDialog(this,
+				JOptionPane.showMessageDialog(
+					this,
 					"The username or password is incorrect.\nThe application will terminate.",
 					"Crypto Trader",
 					JOptionPane.ERROR_MESSAGE

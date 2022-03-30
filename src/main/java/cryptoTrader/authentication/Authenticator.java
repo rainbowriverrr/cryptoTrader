@@ -36,7 +36,7 @@ public class Authenticator implements ILogin {
 	}
 	
 	/**
-	 * Checks if the given username and password are valid.
+	 * Checks if the given username and password combination is valid.
 	 * @param user username
 	 * @param pass password
 	 * @return true if the username and password combination is valid, false otherwise
