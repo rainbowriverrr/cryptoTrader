@@ -12,5 +12,11 @@ public class Strategy {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public LogItem performTrade() {
+		return null;
+		
+		
+	}
 
 }
