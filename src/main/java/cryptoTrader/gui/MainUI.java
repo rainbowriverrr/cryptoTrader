@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -30,14 +29,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import cryptoTrader.utils.DataVisualizationCreator;
-import cryptoTrader.utils.SelectionObject;
-import cryptoTrader.utils.Strategy;
-import cryptoTrader.utils.TradingClient;
 
 public class MainUI extends JFrame implements ActionListener {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private static MainUI instance;
@@ -57,10 +51,6 @@ public class MainUI extends JFrame implements ActionListener {
 	private String selectedStrategy = "";
 	private DefaultTableModel dtm;
 	private JTable table;
-	private ArrayList<String> userList;
-	private ArrayList<TradingClient> TradingClientLog = new ArrayList<TradingClient>();
-	private SelectionObject currentList = new SelectionObject();
-	
 
 	public static MainUI getInstance() {
 		if (instance == null)
@@ -72,7 +62,7 @@ public class MainUI extends JFrame implements ActionListener {
 	private MainUI() {
 
 		// Set window title
-		super("Crypto Trading Tool");
+		super("CryptoTrader");
 
 		// Set top bar
 
@@ -180,179 +170,51 @@ public class MainUI extends JFrame implements ActionListener {
 		stats.revalidate();
 	}
 
-	public static void main(String[] args) {
+	/**
+	 * Starts the application by creating the main UI window.
+	 */
+	public void startApp() {
 		JFrame frame = MainUI.getInstance();
-		frame.setSize(900, 600);
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
 		String command = e.getActionCommand();
-		
-		if ("addTableRow".equals(command)) {
-			
-			currentList = new SelectionObject();
-			
+		if ("refresh".equals(command)) {
 			for (int count = 0; count < dtm.getRowCount(); count++){
-				Object traderObject = dtm.getValueAt(count, 0);
-				if (traderObject == null) {
-					JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
-					return;
-				}
-				String traderName = traderObject.toString();
-				Object coinObject = dtm.getValueAt(count, 1);
-				if (coinObject == null) {
-					JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
-					return;
-				}
-				String[] coinNames = coinObject.toString().split(",");
-				Object strategyObject = dtm.getValueAt(count, 2);
-				if (strategyObject == null) {
-					JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
-					return;
-				}
-				String strategyName = strategyObject.toString();
-			if (currentList.brokers.isEmpty()) {
-				
-				currentList.addToSelectionObject(traderName, coinNames, strategyName);
-					
-			}
-			
-			else if (currentList.brokers.contains(traderName)) {
-				
-				JOptionPane.showMessageDialog(this, String.format("Trading Client %s on Row %d Already Exists, Please Change The Name or Delete Row", traderName, count+1));
-				return;
-			} else {
-				
-				currentList.addToSelectionObject(traderName, coinNames, strategyName);
-			}
-			
-			System.out.println(currentList.brokers);
-		}
-		}
-		
-		if ("addTableRow".equals(command)) {
+					Object traderObject = dtm.getValueAt(count, 0);
+					if (traderObject == null) {
+						JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
+						return;
+					}
+					String traderName = traderObject.toString();
+					Object coinObject = dtm.getValueAt(count, 1);
+					if (coinObject == null) {
+						JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
+						return;
+					}
+					String[] coinNames = coinObject.toString().split(",");
+					Object strategyObject = dtm.getValueAt(count, 2);
+					if (strategyObject == null) {
+						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
+						return;
+					}
+					String strategyName = strategyObject.toString();
+					System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
+	        }
+			stats.removeAll();
+			DataVisualizationCreator creator = new DataVisualizationCreator();
+			creator.createCharts();
+		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
 		} else if ("remTableRow".equals(command)) {
 			int selectedRow = table.getSelectedRow();
 			if (selectedRow != -1)
 				dtm.removeRow(selectedRow);
 		}
-		
-		
-		if ("refresh".equals(command)) {
-			//use refresh to just process last row
-			//that way we don't have process entire list
-			
-			int lastRow = dtm.getRowCount()-1;
-			
-			Object traderObject = dtm.getValueAt(lastRow, 0);
-			if (traderObject == null) {
-				JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (lastRow + 1) );
-				return;
-			}
-			String traderName = traderObject.toString();
-			Object coinObject = dtm.getValueAt(lastRow, 1);
-			if (coinObject == null) {
-				JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (lastRow + 1) );
-				return;
-			}
-			String[] coinNames = coinObject.toString().split(",");
-			Object strategyObject = dtm.getValueAt(lastRow, 2);
-			if (strategyObject == null) {
-				JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (lastRow + 1) );
-				return;
-			}
-			
-				
-				
-			if (dtm.getValueAt(lastRow, 0) == null || lastRow == 0) {
-				
-				int numBrokers = currentList.brokers.size();
-				int currBrokerIndex = 0;
-				
-				
-				while (numBrokers != 0) {
-					
-					String currTraderName = currentList.brokers.get(currBrokerIndex);
-					String[] currCoinList = currentList.coins.get(currBrokerIndex);
-					String currStrategyName = currentList.strategies.get(currBrokerIndex);
-					
-					Strategy currStrategy = new Strategy(currStrategyName);
-					
-					TradingClient currTradingClient = new TradingClient(currTraderName, currCoinList, currStrategy);
-					
-					TradingClientLog.add(currTradingClient);
-					
-					numBrokers--;
-					currBrokerIndex++;
-					
-				}
-					
-					System.out.println(TradingClientLog.toString());
-
-			}
-					
-				
-					
-			else {
-				String lastTrader = dtm.getValueAt(lastRow, 0).toString();
-				String[] lastCoinList = dtm.getValueAt(lastRow, 1).toString().split(",");
-				String lastStrategyName = dtm.getValueAt(lastRow,  2).toString();
-				
-				currentList.addToSelectionObject(lastTrader, lastCoinList, lastStrategyName);
-				
-				int numBrokers = currentList.brokers.size();
-				int currBrokerIndex = 0;
-				
-				
-				while (numBrokers != 0) {
-					
-					String currTraderName = currentList.brokers.get(currBrokerIndex);
-					String[] currCoinList = currentList.coins.get(currBrokerIndex);
-					String currStrategyName = currentList.strategies.get(currBrokerIndex);
-					
-					Strategy currStrategy = new Strategy(currStrategyName);
-					
-					TradingClient currTradingClient = new TradingClient(currTraderName, currCoinList, currStrategy);
-					
-					TradingClientLog.add(currTradingClient);
-					
-					numBrokers--;
-					currBrokerIndex++;
-					
-				}
-					
-					System.out.println(TradingClientLog.toString());
-					
-				}
-						
-						
-						
-					
-					
-					
-					/*
-					Strategy currStrategy = new Strategy(strategyName);
-					TradingClient currClient = new TradingClient(traderName, coinNames, currStrategy);
-					TradingClientLog.add(currClient);
-					
-					System.out.println(TradingClientLog);
-					*/
-					
-					//System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
-				stats.removeAll();
-				DataVisualizationCreator creator = new DataVisualizationCreator();
-				creator.createCharts();
-	        }
-			
-			
-			
 	}
 
 }
