@@ -11,8 +11,7 @@ public class LogItem {
     private int quantity;
     private double price;
     private Date date;
-
-
+    
     public LogItem(){
         this.strategy = "";
         this.trader = "";
@@ -22,6 +21,7 @@ public class LogItem {
         this.price = 0;
         this.date = new Date();
     }
+
     public LogItem(String strategy, String coin, String action, int quantity, double price, Date date){
         this.strategy = strategy;
         this.coin = coin;

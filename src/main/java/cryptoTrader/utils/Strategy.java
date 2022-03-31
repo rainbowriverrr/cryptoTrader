@@ -1,6 +1,8 @@
 package cryptoTrader.utils;
 
-public class Strategy {
+import java.util.Hashtable;
+
+public abstract class Strategy {
 	
 	private String strategyName;
 	
@@ -11,6 +13,12 @@ public class Strategy {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public LogItem performTrade() {
+		return null;
+		
+		
 	}
 
 }
