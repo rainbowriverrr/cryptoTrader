@@ -1,6 +1,8 @@
 package cryptoTrader.utils;
 
-public class Strategy {
+import java.util.Hashtable;
+
+public abstract class Strategy {
 	
 	private String strategyName;
 	
