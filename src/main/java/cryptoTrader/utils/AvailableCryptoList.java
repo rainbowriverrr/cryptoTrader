@@ -30,40 +30,40 @@ public class AvailableCryptoList {
 		findAvailableCryptos();
 	}
 	
-	public void call() {
-		String urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=VNEY4VV2AWF1EB51";
-		try {
-			URL url = new URL(urlString);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-			if (responsecode == 200) {
-				String inline = "";
-				Scanner sc = new Scanner(url.openStream());
-				while (sc.hasNext()) {
-					inline += sc.nextLine();
-				}
-				sc.close();
-				System.out.println(inline);
+//	public void call() {
+//		String urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=VNEY4VV2AWF1EB51";
+//		try {
+//			URL url = new URL(urlString);
+//			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//			conn.setRequestMethod("GET");
+//			conn.connect();
+//			int responsecode = conn.getResponseCode();
+//			if (responsecode == 200) {
+//				String inline = "";
+//				Scanner sc = new Scanner(url.openStream());
+//				while (sc.hasNext()) {
+//					inline += sc.nextLine();
+//				}
+//				sc.close();
+//				System.out.println(inline);
 //				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();
 //				int size = jsonArray.size();
-//				
+//
 //				String name, id;
 //				for (int i = 0; i < size; i++) {
 //					JsonObject object = jsonArray.get(i).getAsJsonObject();
 //					name = object.get("name").getAsString();
 //					id = object.get("id").getAsString();
-//					
+//
 //					availableCryptosMap.put(name, id);
 //					availableCryptosList.add(name);
 //				}
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block e.printStackTrace();
-		}
-	}
+//			}
+//
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block e.printStackTrace();
+//		}
+//	}
 	
 	private void findAvailableCryptos() {
 
@@ -87,14 +87,15 @@ public class AvailableCryptoList {
 				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();
 				int size = jsonArray.size();
 				
-				String name, id;
+				String name, id, symbol;
 				for (int i = 0; i < size; i++) {
 					JsonObject object = jsonArray.get(i).getAsJsonObject();
 					name = object.get("name").getAsString();
 					id = object.get("id").getAsString();
+					symbol = object.get("symbol").getAsString();
 					
-					availableCryptosMap.put(name, id);
-					availableCryptosList.add(name);
+					availableCryptosMap.put(symbol, id);
+					availableCryptosList.add(symbol);
 				}
 			}
 
@@ -102,13 +103,21 @@ public class AvailableCryptoList {
 			// TODO Auto-generated catch block e.printStackTrace();
 		}
 	}
-	
+
+	//Use this to validate if the coin is valid
 	public String[] getAvailableCryptos() {
+
+		System.out.println(availableCryptosList);
+
 		return availableCryptosList.toArray(new String[availableCryptosList.size()]);
 	}
-	
-	public String getCryptoID(String cryptoName) {
-		return availableCryptosMap.get(cryptoName);
+
+	//Use this to convert the symbol to a id that you can use to get the price of the coin via DataFetcher
+	public String getCryptoID(String cryptoSymbol) {
+
+		System.out.println(availableCryptosMap);
+
+		return availableCryptosMap.get(cryptoSymbol);
 	}
 
 }

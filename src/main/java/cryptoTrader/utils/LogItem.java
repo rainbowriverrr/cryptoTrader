@@ -11,7 +11,7 @@ public class LogItem {
     private int quantity;
     private double price;
     private Date date;
-    
+
     public LogItem(){
         this.strategy = "";
         this.trader = "";
