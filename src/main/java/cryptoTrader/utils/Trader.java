@@ -35,10 +35,10 @@ public class Trader {
             for (String coin : coins) {
                 if (searchList(availableCoinsList, coin)) {
 
-                    System.out.println(todayString);
-
                     double price = fetcher.getPriceForCoin(coinsAvailable.getCryptoID(coin.toLowerCase()), todayString);
                     System.out.println(price);
+
+                    requestedCoins.put(coin, price);
 
                 } else {
                     LogItem newLog = new LogItem();
@@ -48,6 +48,8 @@ public class Trader {
                     System.out.println("Invalid Coin " + coin + " for broker " + client.getBrokerName());
                 }
             }
+            System.out.println(requestedCoins);
+            //TODO: Call Client and push requestedCoins
         }
     }
 
