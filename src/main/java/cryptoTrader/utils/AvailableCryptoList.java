@@ -107,7 +107,7 @@ public class AvailableCryptoList {
 	//Use this to validate if the coin is valid
 	public String[] getAvailableCryptos() {
 
-		System.out.println(availableCryptosList);
+		//System.out.println(availableCryptosList);
 
 		return availableCryptosList.toArray(new String[availableCryptosList.size()]);
 	}
@@ -115,7 +115,7 @@ public class AvailableCryptoList {
 	//Use this to convert the symbol to a id that you can use to get the price of the coin via DataFetcher
 	public String getCryptoID(String cryptoSymbol) {
 
-		System.out.println(availableCryptosMap);
+		//System.out.println(availableCryptosMap);
 
 		return availableCryptosMap.get(cryptoSymbol);
 	}

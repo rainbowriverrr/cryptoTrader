@@ -1,22 +1,44 @@
 package cryptoTrader.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class Trader {
 
     private static AvailableCryptoList coinsAvailable;
+    private static DataFetcher fetcher;
+    private static String pattern = "dd-MM-yyyy";
 
     public static void performTrades(ArrayList<TradingClient> clients){
+
+        if(fetcher == null){
+            fetcher = new DataFetcher();
+        }
+        DateFormat df = new SimpleDateFormat(pattern);
+        Date today = new Date();
+        String todayString = df.format(today);
 
         coinsAvailable = AvailableCryptoList.getInstance();
         String[] availableCoinsList = coinsAvailable.getAvailableCryptos();
 
         ArrayList<LogItem> logs;
 
+        //Iterates through clients and sends requested coin price data to them as a dictionary
         for(TradingClient client : clients) {
             String[] coins = client.getCryptoCoins();
+            Dictionary requestedCoins = new Hashtable();
+
             for (String coin : coins) {
                 if (searchList(availableCoinsList, coin)) {
+
+                    System.out.println(todayString);
+
+                    double price = fetcher.getPriceForCoin(coinsAvailable.getCryptoID(coin.toLowerCase()), todayString);
+                    System.out.println(price);
 
                 } else {
                     LogItem newLog = new LogItem();
