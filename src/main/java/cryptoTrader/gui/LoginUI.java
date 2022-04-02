@@ -7,12 +7,15 @@ import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+
 import java.awt.Container;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
+
 import java.io.IOException;
+
 import cryptoTrader.authentication.Authenticator;
 
 /**
