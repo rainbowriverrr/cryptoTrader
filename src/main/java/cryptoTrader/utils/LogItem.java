@@ -23,7 +23,7 @@ public class LogItem {
     }
 
     public LogItem(String strategy, String coin, String action, int quantity, double price, Date date){
-        this.strategy = strategy;
+    	this.strategy = strategy;
         this.coin = coin;
         this.action = action;
         this.quantity = quantity;

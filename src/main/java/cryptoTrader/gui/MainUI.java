@@ -36,6 +36,9 @@ import cryptoTrader.utils.TradingClient;
 import cryptoTrader.utils.LogItem;
 import cryptoTrader.utils.Strategy;
 import cryptoTrader.utils.StrategyA;
+import cryptoTrader.utils.TraderActionLog;
+import cryptoTrader.utils.DisplayHistogram;
+import cryptoTrader.utils.DisplayTable;
 
 public class MainUI extends JFrame {
 
@@ -59,6 +62,9 @@ public class MainUI extends JFrame {
 	private DefaultTableModel dtm;
 	private JTable table;
 	
+	private DisplayTable displayTab = DisplayTable.getInstance();
+	private DisplayHistogram displayHist = DisplayHistogram.getInstance();
+	
 	private ArrayList<TradingClient> clientList; // List of trading clients
 	
 	private boolean isUpdatingTable = false; // Flag to prevent table listener from acting on changes it makes.
@@ -77,7 +83,8 @@ public class MainUI extends JFrame {
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 0);
 
 		// Adds first empty row.
-		String[] firstRow = {"", "", "None"};
+		//String[] firstRow = {"", "", "None"}; TODO put this back
+		String[] firstRow = {"asdvaewf", "wefawef", "Strategy-A"}; // TODO remove this
 		dtm.addRow(firstRow);
 		
 		table = new JTable(dtm);
@@ -87,7 +94,7 @@ public class MainUI extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
 				TitledBorder.CENTER, TitledBorder.TOP));
-		scrollPane.setPreferredSize(new Dimension(800, 300));
+		scrollPane.setPreferredSize(new Dimension(700, 300));
 		
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
@@ -170,6 +177,7 @@ public class MainUI extends JFrame {
 			if (isValidClientTable()) {
 				updateClientList(); // Updates the list from the data in the table.
 				Trader.performTrades(clientList);
+				TraderActionLog.getInstance().notifyObservers();
 			}
 		});
 		JPanel south = new JPanel();
@@ -184,9 +192,8 @@ public class MainUI extends JFrame {
 		west.add(stats);
 
 		getContentPane().add(east, BorderLayout.EAST);
-		getContentPane().add(west, BorderLayout.CENTER);
 		getContentPane().add(south, BorderLayout.SOUTH);
-		getContentPane().add(west, BorderLayout.WEST);
+		getContentPane().add(west, BorderLayout.CENTER);
 	}
 
 	
