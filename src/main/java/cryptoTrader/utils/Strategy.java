@@ -11,10 +11,6 @@ public abstract class Strategy {
 		
 		this.strategyName = strategyName;
 	}
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 	
 	public LogItem performTrade(Dictionary requestedCoins) {
 		return null;

@@ -9,7 +9,6 @@ public class StrategyB extends Strategy {
 	
 	public StrategyB(String strategyName) {
 		super(strategyName);
-		// TODO Auto-generated constructor stub
 	}
 	
 public LogItem performTrade(Hashtable<String, Integer> coinPrices) {
@@ -34,8 +33,10 @@ public LogItem performTrade(Hashtable<String, Integer> coinPrices) {
 			LogItem currLogItem = new LogItem(strategyName,"ADA", "Buy", 10, cardanoPrice, today);
 			return currLogItem;
 			
+		}  else {
+			LogItem currLogItem = new LogItem(strategyName, "ADA", "Sell", 10, cardanoPrice, today);
+			return currLogItem;
 		}
-		return null;
 		
 	}
 

@@ -14,7 +14,7 @@ public class TradingClient {
 
 		String[] coins = coinNames.split(",");
 		for (String coin : coins) coin = coin.trim();
-		Strategy strat = new StrategyA(traderStrategy); // TODO change to use StrategyFactory
+		Strategy strat = StrategyFactory.create(traderStrategy); // TODO change to use StrategyFactory
 
 		this.brokerName = brokerName;
 		this.cryptoCoins = coins;

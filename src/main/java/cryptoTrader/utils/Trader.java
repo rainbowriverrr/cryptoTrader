@@ -47,6 +47,7 @@ public class Trader {
                     //Test Code
                     System.out.println(price);
 
+                    //Adds a coin price pair to the client's requested coin list
                     requestedCoins.put(coin, price);
 
                 } else {
