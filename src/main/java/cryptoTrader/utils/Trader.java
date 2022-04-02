@@ -7,17 +7,24 @@ import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import cryptoTrader.gui.MainUI;
+
 public class Trader {
 
     private static AvailableCryptoList coinsAvailable;
     private static DataFetcher fetcher;
     private static String pattern = "dd-MM-yyyy";
+    private static MainUI ui;
 
     public static void performTrades(ArrayList<TradingClient> clients){
 
+        //Updates data fetcher and MainUI instances
         if(fetcher == null){
             fetcher = new DataFetcher();
         }
+        ui = MainUI.getInstance();
+
+
         DateFormat df = new SimpleDateFormat(pattern);
         Date today = new Date();
         String todayString = df.format(today);
@@ -25,7 +32,7 @@ public class Trader {
         coinsAvailable = AvailableCryptoList.getInstance();
         String[] availableCoinsList = coinsAvailable.getAvailableCryptos();
 
-        ArrayList<LogItem> logs;
+        ArrayList<LogItem> logs = new ArrayList<>();
 
         //Iterates through clients and sends requested coin price data to them as a dictionary
         for(TradingClient client : clients) {
@@ -44,12 +51,18 @@ public class Trader {
                     LogItem newLog = new LogItem();
                     newLog.setCoin(coin);
                     newLog.setTrader(client.getBrokerName());
+                    newLog.setStrategy("N/A");
+                    newLog.setAction("FAIL");
+                    newLog.setQuantity(0);
+                    newLog.setPrice(0);
+
+                    logs.add(newLog);
 
                     System.out.println("Invalid Coin " + coin + " for broker " + client.getBrokerName());
                 }
             }
             System.out.println(requestedCoins);
-            //TODO: Call Client and push requestedCoins
+            //TODO: ui.updateLog(logs)
         }
     }
 
