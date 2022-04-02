@@ -61,9 +61,8 @@ public class MainUI extends JFrame {
 	private JTable table;
 	
 	private ArrayList<TradingClient> clientList; // List of trading clients
-	private ArrayList<LogItem> log = new ArrayList<LogItem>(); // List of log items to be displayed in a table and histogram on the left
 	
-	private boolean isUpdatingTable = false; // Flag to prevent table from generating a tableChanged notification.
+	private boolean isUpdatingTable = false; // Flag to prevent table listener from acting on changes it makes.
 
 	public static MainUI getInstance() {
 		if (instance == null) instance = new MainUI();
@@ -103,39 +102,35 @@ public class MainUI extends JFrame {
 		
 		// Listens for changes to the table.
 		dtm.addTableModelListener(e -> {
-			int rowChanged = e.getFirstRow(); // The row of the value that was changed.
-			int colChanged = e.getColumn(); // The column of the value that was changed.
-			// Checks if table is being updated (by this listener) to prevent infinite loop.
-			if (isUpdatingTable == false && colChanged >= 0) {
-				isUpdatingTable = true;
-				// Trims the String that was entered by the user.
-				String newValue = (String) dtm.getValueAt(rowChanged, colChanged); // New value that the user entered.
-				if (newValue != null) {
+			if (!isUpdatingTable) { // Will not act if table is already being updated by this listener.
+				isUpdatingTable = true; // Set updating flag.
+				int rowChanged = e.getFirstRow(); // The row of the value that was changed.
+				int colChanged = e.getColumn(); // The column of the value that was changed.
+				// If the user entered a client name or coin list.
+				if (colChanged == 0 || colChanged == 1) {
+					String newValue = (String) dtm.getValueAt(rowChanged, colChanged); // New value that the user entered.
+					// Trims the String that was entered by the user.
 					newValue = newValue.trim();
 					dtm.setValueAt(newValue, rowChanged, colChanged);
-				}
-				// If a client name was entered, check if it already exists.
-				if (colChanged == 0) {
-					for (int i = 0; i < dtm.getRowCount(); i++) {
-						String existingName = (String) dtm.getValueAt(i, 0);
-						if (i != rowChanged && !existingName.isBlank() && newValue.equals(existingName)) {
-							JOptionPane.showMessageDialog(
-								this,
-								"Trading Client " + newValue + " already exists on row " + (i + 1) + ".\nPlease enter a different name or delete the row.",
-								"Crypto Trader",
-								JOptionPane.WARNING_MESSAGE
-							);
-							dtm.setValueAt(null, rowChanged, 0); // Clears the conflicting name from the table.
-							isUpdatingTable = false;
-							return;
+					// If a client name was entered, check if it already exists.
+					if (colChanged == 0) {
+						// Iterate rows and check for a conflicting name.
+						for (int i = 0; i < dtm.getRowCount(); i++) {
+							String existingName = (String) dtm.getValueAt(i, 0); // Existing name in the current row.
+							if (i != rowChanged && !existingName.isBlank() && newValue.equals(existingName)) {
+								showWarning("Trading Client " + newValue + " already exists on row " + (i + 1)
+											+ ".\nPlease enter a different name or delete the row.");
+								dtm.setValueAt(null, rowChanged, 0); // Clears the conflicting name from the table.
+								break; // Stop iterating rows when conflict is found and resolved.
+							}
 						}
 					}
+					// If a coin list was entered, change it to capital letters.
+					if (colChanged == 1) {
+						dtm.setValueAt(((String)dtm.getValueAt(rowChanged, 1)).toUpperCase(), rowChanged, colChanged);
+					}
 				}
-				// If a coin list was entered, change it to capital letters.
-				if (colChanged == 1) {
-					dtm.setValueAt(((String)dtm.getValueAt(rowChanged, 1)).toUpperCase(), rowChanged, colChanged);
-				}
-				isUpdatingTable = false;
+				isUpdatingTable = false; // Clear updating flag.
 			}
 		});
 		
@@ -149,8 +144,10 @@ public class MainUI extends JFrame {
 		// Remove row
 		JButton remRow = new JButton("Remove Row");
 		remRow.addActionListener(e -> {
-			int selectedRow = table.getSelectedRow();
-			if (selectedRow != -1) dtm.removeRow(selectedRow);
+			if (dtm.getRowCount() > 0) {
+				int selectedRow = table.getSelectedRow();
+				if (selectedRow != -1) dtm.removeRow(selectedRow);
+			}
 		});
 		
 		// Buttons panel
@@ -193,6 +190,7 @@ public class MainUI extends JFrame {
 		getContentPane().add(west, BorderLayout.WEST);
 	}
 
+	
 	public void updateStats(JComponent component) {
 		stats.add(component);
 		stats.revalidate();
@@ -209,14 +207,6 @@ public class MainUI extends JFrame {
 	}
 	
 	/**
-	 * Add newLogs to the log.
-	 * @param newLogs list of new log items
-	 */
-	public void updateLog(ArrayList<LogItem> newLogs) {
-		log.addAll(newLogs);
-	}
-	
-	/**
 	 * Updates clientList from the data in the table.
 	 */
 	private void updateClientList() {
@@ -225,7 +215,7 @@ public class MainUI extends JFrame {
 			String name = (String) dtm.getValueAt(row, 0);
 			String[] coins = ((String) dtm.getValueAt(row, 1)).split(",");
 			for (String coin : coins) coin = coin.trim();
-			Strategy strat = new StrategyA((String) dtm.getValueAt(row, 2));
+			Strategy strat = new StrategyA((String) dtm.getValueAt(row, 2)); // TODO change to use StrategyFactory
 			TradingClient client = new TradingClient(name, coins, strat);
 			clientList.add(client);
 		}
@@ -236,30 +226,33 @@ public class MainUI extends JFrame {
 	 * @return true if the table is valid, false otherwise
 	 */
 	private boolean isValidClientTable() {
-		// Check for empty table.
-		if (dtm.getRowCount() == 0) {
-			JOptionPane.showMessageDialog(this, "Please add a Trading Client before perfoming trades.", "Crypto Trader", JOptionPane.WARNING_MESSAGE);
-			return false;
-		}
-		// Check for empty values in each row.
+		// Check for blank values in each row.
 		for (int row = 0; row < dtm.getRowCount(); row++) {
 			String name = (String) dtm.getValueAt(row, 0);
-			if (name == null || name.isBlank()) {
-				JOptionPane.showMessageDialog(this, "Please fill in the Trading Client name in row " + (row + 1) + ".", "Crypto Trader", JOptionPane.WARNING_MESSAGE);
+			if (name.isBlank()) {
+				showWarning("Please fill in the Trading Client name in row " + (row + 1) + ".");
 				return false;
 			}
 			String coinsString = (String) dtm.getValueAt(row, 1);
-			if (coinsString == null || coinsString.isBlank()) {
-				JOptionPane.showMessageDialog(this, "Please fill in the Coin List for client " + name + ".", "Crypto Trader", JOptionPane.WARNING_MESSAGE);
+			if (coinsString.isBlank()) {
+				showWarning("Please fill in the Coin List for client " + name + ".");
 				return false;
 			}
 			String strategy = (String) dtm.getValueAt(row, 2);
 			if (strategy.equals("None")) {
-				JOptionPane.showMessageDialog(this, "Please select a strategy for client " + name + ".", "Crypto Trader", JOptionPane.WARNING_MESSAGE);
+				showWarning("Please select a strategy for client " + name + ".");
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * Show a warning pop up with the given message.
+	 * @param message
+	 */
+	private void showWarning(String message) {
+		JOptionPane.showMessageDialog(this, message, "Crypto Trader", JOptionPane.WARNING_MESSAGE);
 	}
 
 }

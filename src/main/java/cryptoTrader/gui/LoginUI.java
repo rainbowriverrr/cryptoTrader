@@ -81,8 +81,10 @@ public class LoginUI extends JFrame {
 		passFieldC.insets = new Insets(10, 5, 0, 10);
 		pane.add(passField, passFieldC);
 		passField.addActionListener(e -> {
+			// For testing purposes, skip login if there is a command line argument.
+			// TODO remove before delivery!
 			if (passField.getPassword().length == 0) userField.grabFocus();
-			else submit();
+			else login();
 		}); // Press enter to submit or switch focus to username field if pass field is empty.
 		
 		// Buttons panel
@@ -115,7 +117,7 @@ public class LoginUI extends JFrame {
 		// Submit button
 		JButton submit = new JButton("Submit");
 		buttons.add(submit);
-		submit.addActionListener(e -> submit()); // Click to submit.
+		submit.addActionListener(e -> login()); // Click to submit.
 		
 		// Message
 		message = new JLabel();
@@ -134,7 +136,7 @@ public class LoginUI extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if (args[0].equals("1")) {
+		if (args.length > 0) {
 			MainUI.getInstance().startApp();
 		} else {
 		JFrame frame = LoginUI.getInstance();
@@ -156,9 +158,10 @@ public class LoginUI extends JFrame {
 	}
 	
 	/**
-	 * Submit the username and password. Creates the main UI and disposes of the login window if the login is valid, otherwise terminates the application.
+	 * Login with the username and password that the user has entered into the fields.
+	 * Creates the main UI and disposes of the login window if the login is valid, otherwise terminates the application.
 	 */
-	private void submit() {
+	private void login() {
 		// Displays message and does not submit if one of the fields is empty.
 		if (userField.getText().isEmpty() || passField.getPassword().length == 0) {
 			setMessage("Please enter a username and password.", Color.RED);
