@@ -1,17 +1,12 @@
 package cryptoTrader.gui;
 
+import java.awt.Component;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.Color;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -19,23 +14,17 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import cryptoTrader.utils.DataVisualizationCreator;
 import cryptoTrader.utils.Trader;
 import cryptoTrader.utils.TradingClient;
-import cryptoTrader.utils.LogItem;
-import cryptoTrader.utils.Strategy;
-import cryptoTrader.utils.StrategyA;
 import cryptoTrader.utils.TraderActionLog;
 import cryptoTrader.utils.DisplayHistogram;
 import cryptoTrader.utils.DisplayTable;
@@ -45,25 +34,15 @@ public class MainUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private static MainUI instance;
-	private JPanel stats, chartPanel, tablePanel;
-
-	// Should be a reference to a separate object in actual implementation
-	private List<String> selectedList;
-
-	private JTextArea selectedTickerList;
-//	private JTextArea tickerList;
-	private JTextArea tickerText;
-	private JTextArea BrokerText;
+	
+	private JPanel stats;
+	private JPanel tablePanel;
+	private JPanel histPanel;
+	
 	private JComboBox<String> strategyList;
-	private Map<String, List<String>> brokersTickers = new HashMap<>();
-	private Map<String, String> brokersStrategies = new HashMap<>();
-	private List<String> selectedTickers = new ArrayList<>();
-	private String selectedStrategy = "";
+
 	private DefaultTableModel dtm;
 	private JTable table;
-	
-	private DisplayTable displayTab = DisplayTable.getInstance();
-	private DisplayHistogram displayHist = DisplayHistogram.getInstance();
 	
 	private ArrayList<TradingClient> clientList; // List of trading clients
 	
@@ -84,7 +63,7 @@ public class MainUI extends JFrame {
 
 		// Adds first empty row.
 		//String[] firstRow = {"", "", "None"}; TODO put this back
-		String[] firstRow = {"asdvaewf", "wefawef", "Strategy-A"}; // TODO remove this
+		String[] firstRow = {"Temp", "BTC,ETH", "Strategy-A"}; // TODO remove this
 		dtm.addRow(firstRow);
 		
 		table = new JTable(dtm);
@@ -167,8 +146,6 @@ public class MainUI extends JFrame {
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
 		east.add(scrollPane);
 		east.add(buttons);
-//		east.add(selectedTickerListLabel);
-//		east.add(selectedTickersScrollPane);
 		
 		// Perform trade
 		JButton trade = new JButton("Perform Trade");
@@ -177,17 +154,28 @@ public class MainUI extends JFrame {
 			if (isValidClientTable()) {
 				updateClientList(); // Updates the list from the data in the table.
 				Trader.performTrades(clientList);
+				// Notify observers to create log table and histogram.
 				TraderActionLog.getInstance().notifyObservers();
 			}
 		});
 		JPanel south = new JPanel();
 		south.add(trade);
 
-		// Set charts region
+		// Table and chart panel
 		JPanel west = new JPanel();
 		west.setPreferredSize(new Dimension(1250, 650));
 		stats = new JPanel();
 		stats.setLayout(new GridLayout(2, 2));
+		
+		// Log table
+		tablePanel = new JPanel();
+		stats.add(tablePanel);
+		new DisplayTable(TraderActionLog.getInstance());
+		
+		// Chart
+		histPanel = new JPanel();
+		stats.add(histPanel);
+		new DisplayHistogram(TraderActionLog.getInstance());
 
 		west.add(stats);
 
@@ -195,11 +183,17 @@ public class MainUI extends JFrame {
 		getContentPane().add(south, BorderLayout.SOUTH);
 		getContentPane().add(west, BorderLayout.CENTER);
 	}
-
 	
-	public void updateStats(JComponent component) {
-		stats.add(component);
-		stats.revalidate();
+	public void updateLogTable(Component newTable) {
+		tablePanel.removeAll();
+		tablePanel.add(newTable);
+		tablePanel.revalidate();
+	}
+	
+	public void updateHist(Component newHist) {
+		histPanel.removeAll();
+		histPanel.add(newHist);
+		histPanel.revalidate();
 	}
 
 	/**

@@ -20,13 +20,7 @@ import cryptoTrader.gui.MainUI;
 
 public class DisplayHistogram implements Observer {
 	
-	  private static DisplayHistogram instance;
 	  private TraderActionLog subject;
-	  
-	  public static DisplayHistogram getInstance() {
-			if (instance == null) instance = new DisplayHistogram(TraderActionLog.getInstance());
-			return instance;
-	  }
 
 	  public DisplayHistogram(TraderActionLog subject) {
 	    this.subject = subject;
@@ -72,7 +66,7 @@ public class DisplayHistogram implements Observer {
 			chartPanel.setPreferredSize(new Dimension(600, 300));
 			chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 			chartPanel.setBackground(Color.white);
-			MainUI.getInstance().updateStats(chartPanel);
+			MainUI.getInstance().updateHist(chartPanel);
 
 
 	  }
