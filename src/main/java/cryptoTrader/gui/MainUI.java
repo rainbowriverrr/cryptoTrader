@@ -73,22 +73,35 @@ public class MainUI extends JFrame {
 	private MainUI() {
 		// Set window title
 		super("Crypto Trader");
-		
-		// Perform trade
-		JButton trade = new JButton("Perform Trade");
-		trade.addActionListener(e -> {
-			// Call Trader to perform trades if the table is valid.
-			if (isValidClientTable()) {
-				updateClientList();
-				Trader.performTrades(clientList);
-			}
-		});
-		JPanel south = new JPanel();
-		south.add(trade);
 
 		// Trading client table
 		
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 0);
+
+		// Adds first empty row.
+		String[] firstRow = {"", "", "None"};
+		dtm.addRow(firstRow);
+		
+		table = new JTable(dtm);
+		table.setFillsViewportHeight(true);
+		table.setGridColor(Color.LIGHT_GRAY);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
+				TitledBorder.CENTER, TitledBorder.TOP));
+		scrollPane.setPreferredSize(new Dimension(800, 300));
+		
+		Vector<String> strategyNames = new Vector<String>();
+		strategyNames.add("None");
+		strategyNames.add("Strategy-A");
+		strategyNames.add("Strategy-B");
+		strategyNames.add("Strategy-C");
+		strategyNames.add("Strategy-D");
+		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
+		strategyList = new JComboBox<String>(strategyNames);
+		strategyColumn.setCellEditor(new DefaultCellEditor(strategyList));
+		
+		// Listens for changes to the table.
 		dtm.addTableModelListener(e -> {
 			int rowChanged = e.getFirstRow(); // The row of the value that was changed.
 			int colChanged = e.getColumn(); // The column of the value that was changed.
@@ -108,39 +121,23 @@ public class MainUI extends JFrame {
 						if (i != rowChanged && !existingName.isBlank() && newValue.equals(existingName)) {
 							JOptionPane.showMessageDialog(
 								this,
-								"The Trading Client you have entered already exists. Please enter a different name or delete the row.",
+								"Trading Client " + newValue + " already exists on row " + (i + 1) + ".\nPlease enter a different name or delete the row.",
 								"Crypto Trader",
 								JOptionPane.WARNING_MESSAGE
 							);
 							dtm.setValueAt(null, rowChanged, 0); // Clears the conflicting name from the table.
+							isUpdatingTable = false;
+							return;
 						}
 					}
+				}
+				// If a coin list was entered, change it to capital letters.
+				if (colChanged == 1) {
+					dtm.setValueAt(((String)dtm.getValueAt(rowChanged, 1)).toUpperCase(), rowChanged, colChanged);
 				}
 				isUpdatingTable = false;
 			}
 		});
-		// Adds first empty row.
-		String[] firstRow = {"", "", "None"};
-		dtm.addRow(firstRow);
-		
-		table = new JTable(dtm);
-		table.setFillsViewportHeight(true);
-		table.setGridColor(Color.LIGHT_GRAY);
-		
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
-				TitledBorder.CENTER, TitledBorder.TOP));
-		scrollPane.setPreferredSize(new Dimension(800, 300));
-		
-		Vector<String> strategyNames = new Vector<String>();
-		strategyNames.add("None");
-		strategyNames.add("Strategy A");
-		strategyNames.add("Strategy B");
-		strategyNames.add("Strategy C");
-		strategyNames.add("Strategy D");
-		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
-		strategyList = new JComboBox<String>(strategyNames);
-		strategyColumn.setCellEditor(new DefaultCellEditor(strategyList));
 		
 		// Add row
 		JButton addRow = new JButton("Add Row");
@@ -153,7 +150,7 @@ public class MainUI extends JFrame {
 		JButton remRow = new JButton("Remove Row");
 		remRow.addActionListener(e -> {
 			int selectedRow = table.getSelectedRow();
-			if (selectedRow != -1 && !strategyList.isPopupVisible()) dtm.removeRow(selectedRow);
+			if (selectedRow != -1) dtm.removeRow(selectedRow);
 		});
 		
 		// Buttons panel
@@ -169,6 +166,18 @@ public class MainUI extends JFrame {
 		east.add(buttons);
 //		east.add(selectedTickerListLabel);
 //		east.add(selectedTickersScrollPane);
+		
+		// Perform trade
+		JButton trade = new JButton("Perform Trade");
+		trade.addActionListener(e -> {
+			// Call Trader to perform trades if the table is valid.
+			if (isValidClientTable()) {
+				updateClientList(); // Updates the list from the data in the table.
+				Trader.performTrades(clientList);
+			}
+		});
+		JPanel south = new JPanel();
+		south.add(trade);
 
 		// Set charts region
 		JPanel west = new JPanel();
