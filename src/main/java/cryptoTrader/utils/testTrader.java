@@ -14,12 +14,12 @@ public class testTrader {
         String[] coins2 = new String[1];
         coins2[0] = "ETH";
 
-        TradingClient testClient = new TradingClient("Test", coins, new StrategyA("test-strat"));
-        TradingClient testClient2 = new TradingClient("Test2", coins2, new StrategyA("test-strat2"));
+        TradingClient testClient = new TradingClient("Test", "AZAEOI, BTC", "StrategyA");
+        TradingClient testClient2 = new TradingClient("Test", "ETH, DOGE", "StrategyB");
 
         ArrayList<TradingClient> clients = new ArrayList<TradingClient>();
-        clients.add(testClient);
-        clients.add(testClient2);
+        //clients.add(testClient);
+        //clients.add(testClient2);
 
         Trader.performTrades(clients);
     }

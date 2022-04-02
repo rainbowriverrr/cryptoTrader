@@ -1,6 +1,7 @@
 package cryptoTrader.utils;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 
 public class TradingClient {
 	
@@ -9,20 +10,26 @@ public class TradingClient {
 	private Strategy traderStrategy;
 	
 	
-	public TradingClient (String brokerName, String[] coinNames, Strategy traderStrategy) {
-		
+	public TradingClient (String brokerName, String coinNames, String traderStrategy) {
+
+		String[] coins = coinNames.split(",");
+		for (String coin : coins) coin = coin.trim();
+		Strategy strat = new StrategyA(traderStrategy); // TODO change to use StrategyFactory
+
 		this.brokerName = brokerName;
-		this.cryptoCoins = coinNames;		
-		this.traderStrategy = (traderStrategy);
+		this.cryptoCoins = coins;
+		this.traderStrategy = strat;
 		
 	}
-	
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public LogItem trade(Dictionary requestedCoins){
 
+		LogItem toReturn = traderStrategy.performTrade(requestedCoins);
+
+		toReturn.setTrader(brokerName);
+
+		return toReturn;
 	}
-
 
 	public String getBrokerName() {
 		return this.brokerName;

@@ -1,6 +1,7 @@
 package cryptoTrader.utils;
 
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class StrategyA extends Strategy {
@@ -13,11 +14,11 @@ public class StrategyA extends Strategy {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public LogItem performTrade(Hashtable<String, Integer> coinPrices) {
+	public LogItem performTrade(Dictionary requestedCoins) {
 		
-		String strategyCoin = "BTC";
+		String strategyCoin = "btc";
 		
-		Object coinValue = coinPrices.get(strategyCoin);
+		Object coinValue = requestedCoins.get(strategyCoin);
 		
 		Date today = new Date();
 		
@@ -35,8 +36,10 @@ public class StrategyA extends Strategy {
 			LogItem currLogItem = new LogItem(strategyName,"BTC", "Buy", 5, bitcoinPrice, today);
 			return currLogItem;
 			
+		} else {
+			LogItem currLogItem = new LogItem(strategyName,"BTC", "Sell", 5, bitcoinPrice, today);
+			return currLogItem;
 		}
-		return null;
 		
 	}
 

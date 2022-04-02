@@ -43,6 +43,8 @@ public class Trader {
                 if (searchList(availableCoinsList, coin)) {
 
                     double price = fetcher.getPriceForCoin(coinsAvailable.getCryptoID(coin.toLowerCase()), todayString);
+
+                    //Test Code
                     System.out.println(price);
 
                     requestedCoins.put(coin, price);
@@ -61,6 +63,8 @@ public class Trader {
                     System.out.println("Invalid Coin " + coin + " for broker " + client.getBrokerName());
                 }
             }
+
+            logs.add(client.trade(requestedCoins));
             System.out.println(requestedCoins);
             //TODO: ui.updateLog(logs)
         }
