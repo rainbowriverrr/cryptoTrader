@@ -212,11 +212,9 @@ public class MainUI extends JFrame {
 		clientList = new ArrayList<TradingClient>();
 		for (int row = 0; row < dtm.getRowCount(); row++) {
 			String name = (String) dtm.getValueAt(row, 0);
-			String[] coins = ((String) dtm.getValueAt(row, 1)).split(",");
-			for (String coin : coins) coin = coin.trim();
-			Strategy strat = new StrategyA((String) dtm.getValueAt(row, 2)); // TODO change to use StrategyFactory
-			TradingClient client = new TradingClient(name, coins, strat);
-			clientList.add(client);
+			String coins = (String) dtm.getValueAt(row, 1);
+			String strat = (String) dtm.getValueAt(row, 2);
+			clientList.add(new TradingClient(name, coins, strat));
 		}
 	}
 	

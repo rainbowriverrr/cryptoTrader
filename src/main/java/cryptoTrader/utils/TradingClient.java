@@ -9,13 +9,17 @@ public class TradingClient {
 	private Strategy traderStrategy;
 	
 	
-	public TradingClient (String brokerName, String[] coinNames, Strategy traderStrategy) {
-		
-		this.brokerName = brokerName;
-		this.cryptoCoins = coinNames;		
-		this.traderStrategy = (traderStrategy);
-		
-	}
+	public TradingClient (String brokerName, String coinNames, String traderStrategy) {
+
+        String[] coins = coinNames.split(",");
+        for (String coin : coins) coin = coin.trim();
+        Strategy strat = new StrategyA(traderStrategy); // TODO change to use StrategyFactory
+
+        this.brokerName = brokerName;
+        this.cryptoCoins = coins;
+        this.traderStrategy = strat;
+        
+    }
 	
 
 	public static void main(String[] args) {
