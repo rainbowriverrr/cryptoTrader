@@ -134,12 +134,16 @@ public class LoginUI extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		if (args[0].equals("1")) {
+			MainUI.getInstance().startApp();
+		} else {
 		JFrame frame = LoginUI.getInstance();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		}
 	}
 	
 	/**
