@@ -61,7 +61,7 @@ public class MainUI extends JFrame {
 	private JTable table;
 	
 	private ArrayList<TradingClient> clientList; // List of trading clients
-	private ArrayList<LogItem> log; // List of log items to be displayed in a table and histogram on the left
+	private ArrayList<LogItem> log = new ArrayList<LogItem>(); // List of log items to be displayed in a table and histogram on the left
 	
 	private boolean isUpdatingTable = false; // Flag to prevent table from generating a tableChanged notification.
 
@@ -197,6 +197,14 @@ public class MainUI extends JFrame {
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
+	}
+	
+	/**
+	 * Add newLogs to the log.
+	 * @param newLogs list of new log items
+	 */
+	public void updateLog(ArrayList<LogItem> newLogs) {
+		log.addAll(newLogs);
 	}
 	
 	/**
