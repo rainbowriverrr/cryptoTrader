@@ -2,7 +2,7 @@ package cryptoTrader.utils;
 
 public class StrategyFactory {
 	
-	public static Strategy create(String strategyName) {
+	protected static Strategy create(String strategyName) {
 		
 		//get the specific strategy letter from strategy name ex. "StrategyA" -> "A"
 		
