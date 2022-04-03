@@ -8,7 +8,7 @@ public class StrategyFactory {
 		
 		char strategyLetter = strategyName.charAt(strategyName.length() -1);
 
-		System.out.println(strategyLetter);
+		//System.out.println(strategyLetter);
 		
 		switch(strategyLetter) {
 		

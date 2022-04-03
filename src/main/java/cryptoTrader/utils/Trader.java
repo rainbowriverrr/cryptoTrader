@@ -45,7 +45,7 @@ public class Trader {
                     double price = fetcher.getPriceForCoin(coinsAvailable.getCryptoID(coin.toLowerCase()), todayString);
 
                     //Test Code
-                    System.out.println(price);
+                    //System.out.println(price);
 
                     //Adds a coin price pair to the client's requested coin list
                     requestedCoins.put(coin, price);
@@ -66,7 +66,7 @@ public class Trader {
             }
 
             logs.add(client.trade(requestedCoins));
-            System.out.println(requestedCoins);
+            //System.out.println(requestedCoins);
             //Testing logs
             //for( LogItem log : logs) {
             //    System.out.println(log.toString());
