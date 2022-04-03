@@ -15,4 +15,8 @@ public abstract class Strategy {
 		return null;
 	}
 
+	public String getName(){
+		return strategyName;
+	}
+
 }

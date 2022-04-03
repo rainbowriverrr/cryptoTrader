@@ -54,7 +54,7 @@ public class Trader {
                     LogItem newLog = new LogItem();
                     newLog.setCoin(coin);
                     newLog.setTrader(client.getBrokerName());
-                    newLog.setStrategy("N/A");
+                    newLog.setStrategy(client.getTraderStrategy().getName());
                     newLog.setAction("FAIL");
                     newLog.setQuantity(0);
                     newLog.setPrice(0);
@@ -72,7 +72,7 @@ public class Trader {
             //    System.out.println(log.toString());
             //}
         }
-        //TODO: ui.updateLog(logs)
+        TraderActionLog.getInstance().updateLog(logs);
     }
 
 
