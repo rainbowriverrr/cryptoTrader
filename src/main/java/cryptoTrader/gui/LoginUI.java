@@ -24,13 +24,13 @@ import cryptoTrader.authentication.Authenticator;
  */
 public class LoginUI extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
+
 	private static LoginUI instance; // Single instance of the LoginUI
 	
 	private JPasswordField passField; // The password field
 	private JTextField userField; // The username field
 	private JLabel message; // The message at the bottom of the window
-	
-	private MainUI main; // Reference to the main UI
 	
 	private LoginUI() {
 		
@@ -84,8 +84,6 @@ public class LoginUI extends JFrame {
 		passFieldC.insets = new Insets(10, 5, 0, 10);
 		pane.add(passField, passFieldC);
 		passField.addActionListener(e -> {
-			// For testing purposes, skip login if there is a command line argument.
-			// TODO remove before delivery!
 			if (passField.getPassword().length == 0) userField.grabFocus();
 			else login();
 		}); // Press enter to submit or switch focus to username field if pass field is empty.
@@ -120,7 +118,7 @@ public class LoginUI extends JFrame {
 		// Submit button
 		JButton submit = new JButton("Submit");
 		buttons.add(submit);
-		submit.addActionListener(e -> login()); // Click to submit.
+		submit.addActionListener(e -> login()); // Click to login.
 		
 		// Message
 		message = new JLabel();
@@ -135,29 +133,31 @@ public class LoginUI extends JFrame {
 	}
 	
 	/**
+	 * Get the single instance of LoginUI. Creates it if it does not exist yet.
+	 * @return instance of LoginUI
+	 */
+	private static LoginUI getInstance() {
+		if (instance == null) instance = new LoginUI();
+		return instance;
+	}
+	
+	/**
 	 * Creates the login window.
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		// For testing purposes, skip login if there is a command line argument.
+		// TODO remove before delivery!
 		if (args.length > 0) {
 			MainUI.getInstance().startApp();
 		} else {
-		JFrame frame = LoginUI.getInstance();
+		JFrame frame = getInstance();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		}
-	}
-	
-	/**
-	 * Get the single instance of LoginUI.
-	 * @return instance of LoginUI, creates it if it does not exist
-	 */
-	private static LoginUI getInstance() {
-		if (instance == null) instance = new LoginUI();
-		return instance;
 	}
 	
 	/**
@@ -179,8 +179,7 @@ public class LoginUI extends JFrame {
 				dispose();
 			}
 			if(isValidLogin) {
-				main = MainUI.getInstance();
-				main.startApp();
+				MainUI.getInstance().startApp(); // Initialize MainUI and start the app.
 				dispose(); // Close login UI.
 			} else {
 				JOptionPane.showMessageDialog(
@@ -203,7 +202,7 @@ public class LoginUI extends JFrame {
 		message.setForeground(c);
 		message.setText(text);
 		message.setVisible(true);
-		LoginUI.getInstance().pack();
+		getInstance().pack();
 	}
 
 }

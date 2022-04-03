@@ -3,7 +3,6 @@ package cryptoTrader.gui;
 import java.awt.Component;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Color;
 
 import java.util.ArrayList;
@@ -33,26 +32,25 @@ public class MainUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private static MainUI instance;
+	private static MainUI instance; // Single instance of MainUI
 	
-	private JPanel stats;
-	private JPanel tablePanel;
-	private JPanel histPanel;
+	private JPanel stats; // Panel with the tablePanle and histPanel.
+	private JPanel tablePanel; // Panel with the log item table.
+	private JPanel histPanel; // Panel with the histogram.
 	
-	private JComboBox<String> strategyList;
+	private JComboBox<String> strategyList; // Strategy selection menu.
 
-	private DefaultTableModel dtm;
-	private JTable table;
+	private DefaultTableModel dtm; // Underlying data of the UI table.
+	private JTable table; // UI table that displays the data in dtm.
 	
 	private ArrayList<TradingClient> clientList; // List of trading clients
 	
 	private boolean isUpdatingTable = false; // Flag to prevent table listener from acting on changes it makes.
 
-	public static MainUI getInstance() {
-		if (instance == null) instance = new MainUI();
-		return instance;
-	}
-
+	/**
+	 * Constructs the main UI and most of its subcomponents.
+	 * Initializes DisplayTable and DisplayHistogram which will create the log item table and histogram when needed.
+	 */
 	private MainUI() {
 		// Set window title
 		super("Crypto Trader");
@@ -62,8 +60,10 @@ public class MainUI extends JFrame {
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 0);
 
 		// Adds first empty row.
-		//String[] firstRow = {"", "", "None"}; TODO put this back
-		String[] firstRow = {"Temp", "BTC,ETH", "Strategy-A"}; // TODO remove this
+		//String[] firstRow = {"", "", "None"};
+		
+		// Adds a filled row for faster testing.
+		String[] firstRow = {"Temp", "BTC, ETH", "Strategy-A"};
 		dtm.addRow(firstRow);
 		
 		table = new JTable(dtm);
@@ -73,7 +73,7 @@ public class MainUI extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
 				TitledBorder.CENTER, TitledBorder.TOP));
-		scrollPane.setPreferredSize(new Dimension(700, 300));
+		scrollPane.setPreferredSize(new Dimension(800, 300));
 		
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
@@ -165,17 +165,17 @@ public class MainUI extends JFrame {
 		JPanel west = new JPanel();
 		west.setPreferredSize(new Dimension(1250, 650));
 		stats = new JPanel();
-		stats.setLayout(new GridLayout(2, 2));
+		stats.setLayout(new BoxLayout(stats, BoxLayout.Y_AXIS)); // One on top the other.
 		
 		// Log table
 		tablePanel = new JPanel();
 		stats.add(tablePanel);
-		new DisplayTable(TraderActionLog.getInstance());
+		new DisplayTable(TraderActionLog.getInstance()); // Initialize DisplayTable
 		
 		// Chart
 		histPanel = new JPanel();
 		stats.add(histPanel);
-		new DisplayHistogram(TraderActionLog.getInstance());
+		new DisplayHistogram(TraderActionLog.getInstance()); // Initialize DisplayHistogram
 
 		west.add(stats);
 
@@ -184,12 +184,29 @@ public class MainUI extends JFrame {
 		getContentPane().add(west, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Gets the single instance of MainUI. Creates it if it does not exist yet.
+	 * @return instance of MainUI
+	 */
+	public static MainUI getInstance() {
+		if (instance == null) instance = new MainUI();
+		return instance;
+	}
+	
+	/**
+	 * Replaces the components in tablePanel with the given component newTable.
+	 * @param newTable the new component
+	 */
 	public void updateLogTable(Component newTable) {
 		tablePanel.removeAll();
 		tablePanel.add(newTable);
 		tablePanel.revalidate();
 	}
 	
+	/**
+	 * Replaces the components in histPanel with the given component newHist.
+	 * @param newHist the new component
+	 */
 	public void updateHist(Component newHist) {
 		histPanel.removeAll();
 		histPanel.add(newHist);
@@ -208,31 +225,33 @@ public class MainUI extends JFrame {
 	
 	/**
 	 * Updates clientList from the data in the table.
+	 * Called only before the trades are performed.
 	 */
 	private void updateClientList() {
-		clientList = new ArrayList<TradingClient>();
+		clientList = new ArrayList<TradingClient>(); // Creates new list, replaces the old list if there is one.
+		// Iterates the rows of the table, creates a TradingClient for each one and adds it to clientList.
 		for (int row = 0; row < dtm.getRowCount(); row++) {
-			String name = (String) dtm.getValueAt(row, 0);
-			String coins = (String) dtm.getValueAt(row, 1);
-			String strat = (String) dtm.getValueAt(row, 2);
+			String name = (String) dtm.getValueAt(row, 0); // Name of the trading client
+			String coins = (String) dtm.getValueAt(row, 1); // Coin list of the client
+			String strat = (String) dtm.getValueAt(row, 2); // Strategy of the client
 			clientList.add(new TradingClient(name, coins, strat));
 		}
 	}
 	
 	/**
-	 * Checks if the trading client table is valid (No missing or blank values). Notifies the user to fix the first invalid value in the table.
+	 * Checks if the trading client table is valid (no missing values). Notifies the user to fix the first missing value in the table.
 	 * @return true if the table is valid, false otherwise
 	 */
 	private boolean isValidClientTable() {
-		// Check for blank values in each row.
+		// Check for empty values in each row.
 		for (int row = 0; row < dtm.getRowCount(); row++) {
 			String name = (String) dtm.getValueAt(row, 0);
-			if (name.isBlank()) {
+			if (name.isEmpty()) {
 				showWarning("Please fill in the Trading Client name in row " + (row + 1) + ".");
 				return false;
 			}
-			String coinsString = (String) dtm.getValueAt(row, 1);
-			if (coinsString.isBlank()) {
+			String coins = (String) dtm.getValueAt(row, 1);
+			if (coins.isEmpty()) {
 				showWarning("Please fill in the Coin List for client " + name + ".");
 				return false;
 			}
