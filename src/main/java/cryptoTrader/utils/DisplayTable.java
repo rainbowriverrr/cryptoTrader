@@ -54,7 +54,7 @@ public class DisplayTable implements Observer {
 		i1.setTrader("Bob");
 		LogItem i2 = new LogItem("Strategy-B", "ETH", "Sell", 300, 69.69, new Date());
 		i2.setTrader("Sally");
-		LogItem i3 = new LogItem("Strategy-C", "DOGE", "FAIL", 150, 94.22, new Date());
+		LogItem i3 = new LogItem("Strategy-C", "DOGE", "FAIL", 0, 94.22, new Date());
 		i3.setTrader("Jimmy");
 		log.add(i1);
 		log.add(i2);
@@ -79,8 +79,15 @@ public class DisplayTable implements Observer {
 			row[1] = item.getStrategy();
 			row[2] = item.getCoin();
 			row[3] = item.getAction();
-			row[4] = String.valueOf(item.getQuantity()); // int to String
-			row[5] = String.valueOf(item.getPrice()); // double to String
+			
+			// Quantity of 0 indicates a failed action. Quantity and price should read "Null".
+			if (item.getQuantity() == 0) {
+				row[4] = "Null";
+				row[5] = "Null";
+			} else {
+				row[4] = String.valueOf(item.getQuantity());
+				row[5] = String.valueOf(item.getPrice());
+			}
 			
 			// Builds the date String from the Date object.
 			cal.setTime(item.getDate());
@@ -99,13 +106,13 @@ public class DisplayTable implements Observer {
 		table.setFillsViewportHeight(true);
 		
 		// Table is put in a scroll pane.
-		JScrollPane tablePane = new JScrollPane(table);
-		tablePane.setBorder (BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBorder (BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
 				"Trader Actions",
 				TitledBorder.CENTER,
 				TitledBorder.TOP));
-		tablePane.setPreferredSize(new Dimension(600, 300));
+		scrollPane.setPreferredSize(new Dimension(650, 300));
 		
-		MainUI.getInstance().updateLogTable(tablePane); // Adds the new table to the UI.
+		MainUI.getInstance().updateLogTable(scrollPane); // Adds the new table to the UI.
 	}
 }

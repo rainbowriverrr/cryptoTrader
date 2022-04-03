@@ -77,7 +77,7 @@ public class DisplayHistogram implements Observer {
 		
 		JFreeChart barChart = new JFreeChart("Actions Performed By Traders So Far", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
 		ChartPanel chartPanel = new ChartPanel(barChart);
-		chartPanel.setPreferredSize(new Dimension(600, 300));
+		chartPanel.setPreferredSize(new Dimension(650, 300));
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		chartPanel.setBackground(Color.white);
 		

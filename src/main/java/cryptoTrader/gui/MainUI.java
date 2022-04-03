@@ -34,14 +34,10 @@ public class MainUI extends JFrame {
 
 	private static MainUI instance; // Single instance of MainUI
 	
-	private JPanel stats; // Panel with the tablePanle and histPanel.
 	private JPanel tablePanel; // Panel with the log item table.
 	private JPanel histPanel; // Panel with the histogram.
-	
-	private JComboBox<String> strategyList; // Strategy selection menu.
 
 	private DefaultTableModel dtm; // Underlying data of the UI table.
-	private JTable table; // UI table that displays the data in dtm.
 	
 	private ArrayList<TradingClient> clientList; // List of trading clients
 	
@@ -66,7 +62,7 @@ public class MainUI extends JFrame {
 		String[] firstRow = {"Temp", "BTC, ETH", "Strategy-A"};
 		dtm.addRow(firstRow);
 		
-		table = new JTable(dtm);
+		JTable table = new JTable(dtm); // UI table displays data in dtm
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.LIGHT_GRAY);
 		
@@ -82,7 +78,7 @@ public class MainUI extends JFrame {
 		strategyNames.add("Strategy-C");
 		strategyNames.add("Strategy-D");
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
-		strategyList = new JComboBox<String>(strategyNames);
+		JComboBox<String> strategyList = new JComboBox<String>(strategyNames);
 		strategyColumn.setCellEditor(new DefaultCellEditor(strategyList));
 		
 		// Listens for changes to the table.
@@ -129,7 +125,7 @@ public class MainUI extends JFrame {
 		// Remove row
 		JButton remRow = new JButton("Remove Row");
 		remRow.addActionListener(e -> {
-			if (dtm.getRowCount() > 0) {
+			if (dtm.getRowCount() > 1) {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow != -1) dtm.removeRow(selectedRow);
 			}
@@ -147,6 +143,20 @@ public class MainUI extends JFrame {
 		east.add(scrollPane);
 		east.add(buttons);
 		
+		// West panel
+		JPanel west = new JPanel();
+		west.setPreferredSize(new Dimension(700, 650));
+		
+		// Log table
+		tablePanel = new JPanel();
+		west.add(tablePanel);
+		new DisplayTable(TraderActionLog.getInstance()); // Initialize DisplayTable
+		
+		// Histogram
+		histPanel = new JPanel();
+		west.add(histPanel);
+		new DisplayHistogram(TraderActionLog.getInstance()); // Initialize DisplayHistogram
+		
 		// Perform trade
 		JButton trade = new JButton("Perform Trade");
 		trade.addActionListener(e -> {
@@ -160,24 +170,6 @@ public class MainUI extends JFrame {
 		});
 		JPanel south = new JPanel();
 		south.add(trade);
-
-		// Table and chart panel
-		JPanel west = new JPanel();
-		west.setPreferredSize(new Dimension(1250, 650));
-		stats = new JPanel();
-		stats.setLayout(new BoxLayout(stats, BoxLayout.Y_AXIS)); // One on top the other.
-		
-		// Log table
-		tablePanel = new JPanel();
-		stats.add(tablePanel);
-		new DisplayTable(TraderActionLog.getInstance()); // Initialize DisplayTable
-		
-		// Chart
-		histPanel = new JPanel();
-		stats.add(histPanel);
-		new DisplayHistogram(TraderActionLog.getInstance()); // Initialize DisplayHistogram
-
-		west.add(stats);
 
 		getContentPane().add(east, BorderLayout.EAST);
 		getContentPane().add(south, BorderLayout.SOUTH);
