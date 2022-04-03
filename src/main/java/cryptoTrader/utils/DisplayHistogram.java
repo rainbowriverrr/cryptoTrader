@@ -48,6 +48,8 @@ public class DisplayHistogram implements Observer {
 	private void createHistogram() {
 		ArrayList<LogItem> tradelog = subject.getLog();
 		
+		// Example code
+		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		// Those are hard-coded values!!!! 
 		// You will have to come up with a proper datastructure to populate the BarChart with live data!
@@ -70,6 +72,8 @@ public class DisplayHistogram implements Observer {
 	
 		// plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
 		// plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
+		
+		// End of example code
 		
 		JFreeChart barChart = new JFreeChart("Actions Performed By Traders So Far", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
 		ChartPanel chartPanel = new ChartPanel(barChart);

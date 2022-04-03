@@ -54,7 +54,7 @@ public class DisplayTable implements Observer {
 		i1.setTrader("Bob");
 		LogItem i2 = new LogItem("Strategy-B", "ETH", "Sell", 300, 69.69, new Date());
 		i2.setTrader("Sally");
-		LogItem i3 = new LogItem("Strategy-C", "DOGE", "Buy", 150, 94.22, new Date());
+		LogItem i3 = new LogItem("Strategy-C", "DOGE", "FAIL", 150, 94.22, new Date());
 		i3.setTrader("Jimmy");
 		log.add(i1);
 		log.add(i2);
@@ -66,6 +66,15 @@ public class DisplayTable implements Observer {
 		for (int i = 0; i < log.size(); i++) {
 			String[] row = new String[7]; // Row of the table data.
 			LogItem item = log.get(i); // LogItem currently being interpreted as a String[] for the table.
+			
+			// If there was a failed action, notify MainUI to display a pop up.
+			if (item.getAction().equals("FAIL")) {
+				MainUI.getInstance().showWarning(
+					item.getStrategy() + " could not be applied to Trading Client " + item.getTrader()
+					+ ".\nPlease ensure the Coin List contains all the coins needed for the strategy and is free of errors."
+				);
+			}
+			
 			row[0] = item.getTrader();
 			row[1] = item.getStrategy();
 			row[2] = item.getCoin();

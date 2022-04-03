@@ -194,6 +194,16 @@ public class MainUI extends JFrame {
 	}
 	
 	/**
+	 * Starts the application by creating the main UI window.
+	 */
+	public void startApp() {
+		JFrame frame = getInstance();
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	/**
 	 * Replaces the components in tablePanel with the given component newTable.
 	 * @param newTable the new component
 	 */
@@ -212,15 +222,13 @@ public class MainUI extends JFrame {
 		histPanel.add(newHist);
 		histPanel.revalidate();
 	}
-
+	
 	/**
-	 * Starts the application by creating the main UI window.
+	 * Show a warning pop up with the given message.
+	 * @param message
 	 */
-	public void startApp() {
-		JFrame frame = MainUI.getInstance();
-		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
+	public void showWarning(String message) {
+		JOptionPane.showMessageDialog(this, message, "Crypto Trader", JOptionPane.WARNING_MESSAGE);
 	}
 	
 	/**
@@ -262,14 +270,6 @@ public class MainUI extends JFrame {
 			}
 		}
 		return true;
-	}
-	
-	/**
-	 * Show a warning pop up with the given message.
-	 * @param message
-	 */
-	private void showWarning(String message) {
-		JOptionPane.showMessageDialog(this, message, "Crypto Trader", JOptionPane.WARNING_MESSAGE);
 	}
 
 }
