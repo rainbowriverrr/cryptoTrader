@@ -9,13 +9,19 @@ import java.util.Hashtable;
 
 import cryptoTrader.gui.MainUI;
 
+
 public class Trader {
 
     private static AvailableCryptoList coinsAvailable;
     private static DataFetcher fetcher;
     private static String pattern = "dd-MM-yyyy";
     private static MainUI ui;
-    
+
+    /**
+     * Returns an ArrayList of LogItems which contains both successful and failed trades.
+     * @param clients
+     * @return log of performed trades and errors
+     */
     public static void performTrades(ArrayList<TradingClient> clients){
 
         //Updates data fetcher and MainUI instances
@@ -43,9 +49,6 @@ public class Trader {
                 if (searchList(availableCoinsList, coin)) {
 
                     double price = fetcher.getPriceForCoin(coinsAvailable.getCryptoID(coin.toLowerCase()), todayString);
-
-                    //Test Code
-                    //System.out.println(price);
 
                     //Adds a coin price pair to the client's requested coin list
                     requestedCoins.put(coin, price);
