@@ -10,6 +10,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.border.TitledBorder;
 
 import cryptoTrader.gui.MainUI;
@@ -20,6 +21,10 @@ import cryptoTrader.gui.MainUI;
 public class DisplayTable implements Observer {
 	
 	private TraderActionLog subject; // DisplayTable is observer to TraderActionLog.
+	
+	private JTable table; // The table
+	private DefaultTableModel dtm; // DTM for the table
+	private JScrollPane scrollPane; // table is in a scroll pane
 
 	/**
 	 * Construct a DisplayTable that observes the given subject.
@@ -28,6 +33,19 @@ public class DisplayTable implements Observer {
 	public DisplayTable(TraderActionLog subject) {
 		this.subject = subject;
 		subject.attach(this);
+		
+		dtm = new DefaultTableModel(new Object[] {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"}, 0);
+		table = new JTable(dtm);
+		table.setEnabled(false); // Prevents user from editing the table since it is only for displaying data.
+		table.setGridColor(Color.LIGHT_GRAY);
+		table.setFillsViewportHeight(true);
+		// Table is put in a scroll pane.
+		scrollPane = new JScrollPane(table);
+		scrollPane.setBorder (BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+				"Trader Actions",
+				TitledBorder.CENTER,
+				TitledBorder.TOP));
+		scrollPane.setPreferredSize(new Dimension(650, 300));
 	}
 
 	/**
@@ -43,12 +61,10 @@ public class DisplayTable implements Observer {
 	 */
 	private void display() {
 		
-		Object[] columnNames = {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"}; // Names of the table columns.
-		
 		ArrayList<LogItem> log = subject.getLog();
 		
-		Object[][] data = new String[log.size()][7]; // Data of the table. Row for each log item, 7 columns.
 		Calendar cal = Calendar.getInstance(); // Calendar instance to interpret the log Date.
+
 		// Iterates the log items and adds them to the table.
 		for (int i = 0; i < log.size(); i++) {
 			String[] row = new String[7]; // Row of the table data.
@@ -84,21 +100,8 @@ public class DisplayTable implements Observer {
 			dateStr += "-" + cal.get(Calendar.YEAR);
 			row[6] = dateStr;
 			
-			data[i] = row; // Add the new row to the table data.
+			dtm.addRow(row); // Add the new row to the table data.
 		}
-		
-		JTable table = new JTable(data, columnNames); // The UI table of log items.
-		table.setEnabled(false); // Prevents user from editing the table since it is only for displaying data.
-		table.setGridColor(Color.LIGHT_GRAY);
-		table.setFillsViewportHeight(true);
-		
-		// Table is put in a scroll pane.
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBorder (BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-				"Trader Actions",
-				TitledBorder.CENTER,
-				TitledBorder.TOP));
-		scrollPane.setPreferredSize(new Dimension(650, 300));
 		
 		MainUI.getInstance().updateLogTable(scrollPane); // Adds the new table to the UI.
 	}
