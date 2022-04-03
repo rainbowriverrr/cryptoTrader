@@ -19,7 +19,7 @@ public class Trader {
 
     /**
      * Returns an ArrayList of LogItems which contains both successful and failed trades.
-     * @param clients
+     * @param clients an Arraylist of TradingClient objects
      * @return log of performed trades and errors
      */
     public static void performTrades(ArrayList<TradingClient> clients){
