@@ -21,11 +21,11 @@ public class TraderActionLog extends Subject {
 	}
 	
 	/**
-	 * Append newLogs to the log and notifies the observers.
+	 * Replaces log with newLog.
 	 * @param newLogs list of new log items
 	 */
-	public void updateLog(ArrayList<LogItem> newLogs) {
-		log.addAll(newLogs);
+	public void updateLog(ArrayList<LogItem> newLog) {
+		log = newLog;
 		notifyObservers(); // Notifies observers to create the UI log table and histogram.
 	}
 
