@@ -1,18 +1,18 @@
 package cryptoTrader.utils;
 
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class StrategyB extends Strategy {
 	
-	private String strategyName;
+	private String strategyName = "ADA B";
 	
 	public StrategyB(String strategyName) {
 		super(strategyName);
-		// TODO Auto-generated constructor stub
 	}
 	
-public LogItem performTrade(Hashtable<String, Integer> coinPrices) {
+	public LogItem performTrade(Dictionary coinPrices) {
 		
 		String strategyCoin = "ADA";
 		
@@ -22,21 +22,22 @@ public LogItem performTrade(Hashtable<String, Integer> coinPrices) {
 		
 		
 		if (coinValue == null) {
-			LogItem errorLog = new LogItem(strategyName, "ADA", "ERROR", 0, 0, today);
-			return errorLog;
+			return new LogItem(strategyName, strategyCoin, "FAIL", 0, 0, today);
 		}
 		
 		
 		double cardanoPrice = (double) coinValue;
-		
+
+		LogItem currLogItem;
 		if (cardanoPrice < 2) {
-			
-			LogItem currLogItem = new LogItem(strategyName,"ADA", "Buy", 10, cardanoPrice, today);
-			return currLogItem;
-			
+
+			currLogItem = new LogItem(strategyName, strategyCoin, "Buy", 10, cardanoPrice, today);
+
+		}  else {
+			currLogItem = new LogItem(strategyName, strategyCoin, "Sell", 10, cardanoPrice, today);
 		}
-		return null;
-		
+		return currLogItem;
+
 	}
 
 }

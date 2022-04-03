@@ -1,43 +1,45 @@
 package cryptoTrader.utils;
 
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class StrategyA extends Strategy {
 	
-	private String strategyName;
+	private String strategyName = "BTC A";
 	
 	public StrategyA(String strategyName) {
 		
 		super(strategyName);
-		// TODO Auto-generated constructor stub
+
 	}
 	
-	public LogItem performTrade(Hashtable<String, Integer> coinPrices) {
+	public LogItem performTrade(Dictionary requestedCoins) {
 		
 		String strategyCoin = "BTC";
 		
-		Object coinValue = coinPrices.get(strategyCoin);
+		Object coinValue = requestedCoins.get(strategyCoin);
 		
 		Date today = new Date();
 		
 		
 		if (coinValue == null) {
-			LogItem errorLog = new LogItem(strategyName, "BTC", "ERROR", 0, 0, today);
-			return errorLog;
+			return new LogItem(strategyName, strategyCoin, "FAIL", 0, 0, today);
 		}
 		
 		
 		double bitcoinPrice = (double) coinValue;
-		
+
+		LogItem currLogItem;
 		if (bitcoinPrice < 59000) {
-			
-			LogItem currLogItem = new LogItem(strategyName,"BTC", "Buy", 5, bitcoinPrice, today);
-			return currLogItem;
-			
+
+			currLogItem = new LogItem(strategyName, strategyCoin, "Buy", 5, bitcoinPrice, today);
+
+		} else {
+			currLogItem = new LogItem(strategyName, strategyCoin, "Sell", 5, bitcoinPrice, today);
 		}
-		return null;
-		
+		return currLogItem;
+
 	}
 
 }

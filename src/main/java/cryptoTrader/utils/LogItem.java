@@ -11,7 +11,7 @@ public class LogItem {
     private int quantity;
     private double price;
     private Date date;
-    
+
     public LogItem(){
         this.strategy = "";
         this.trader = "";
@@ -85,5 +85,11 @@ public class LogItem {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String toString(){
+        String toReturn = "Trader: " + trader + "\n Strategy: " + strategy + "\n" + coin + " " + action + " " + price + " " + date.toString();
+
+        return toReturn;
     }
 }
