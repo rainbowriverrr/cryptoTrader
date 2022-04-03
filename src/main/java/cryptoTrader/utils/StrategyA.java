@@ -6,11 +6,11 @@ import java.util.Hashtable;
 
 public class StrategyA extends Strategy {
 	
-	private String strategyName = "StrategyA";
+	private String strategyName = "BTC A";
 	
-	public StrategyA() {
+	public StrategyA(String strategyName) {
 		
-		super();
+		super(strategyName);
 
 	}
 	
@@ -24,23 +24,22 @@ public class StrategyA extends Strategy {
 		
 		
 		if (coinValue == null) {
-			LogItem errorLog = new LogItem(strategyName, "BTC", "FAIL", 0, 0, today);
-			return errorLog;
+			return new LogItem(strategyName, strategyCoin, "FAIL", 0, 0, today);
 		}
 		
 		
 		double bitcoinPrice = (double) coinValue;
-		
+
+		LogItem currLogItem;
 		if (bitcoinPrice < 59000) {
-			
-			LogItem currLogItem = new LogItem(strategyName,"BTC", "Buy", 5, bitcoinPrice, today);
-			return currLogItem;
-			
+
+			currLogItem = new LogItem(strategyName, strategyCoin, "Buy", 5, bitcoinPrice, today);
+
 		} else {
-			LogItem currLogItem = new LogItem(strategyName,"BTC", "Sell", 5, bitcoinPrice, today);
-			return currLogItem;
+			currLogItem = new LogItem(strategyName, strategyCoin, "Sell", 5, bitcoinPrice, today);
 		}
-		
+		return currLogItem;
+
 	}
 
 }

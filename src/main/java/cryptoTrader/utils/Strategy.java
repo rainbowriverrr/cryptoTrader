@@ -7,8 +7,8 @@ public abstract class Strategy {
 	
 	private String strategyName;
 	
-	public Strategy () {
-
+	public Strategy (String strategyName) {
+		this.strategyName = strategyName;
 	}
 	
 	public LogItem performTrade(Dictionary requestedCoins) {

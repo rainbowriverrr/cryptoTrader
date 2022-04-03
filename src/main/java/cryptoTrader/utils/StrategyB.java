@@ -6,13 +6,13 @@ import java.util.Hashtable;
 
 public class StrategyB extends Strategy {
 	
-	private String strategyName = "StrategyB";
+	private String strategyName = "ADA B";
 	
-	public StrategyB() {
-		super();
+	public StrategyB(String strategyName) {
+		super(strategyName);
 	}
 	
-public LogItem performTrade(Dictionary coinPrices) {
+	public LogItem performTrade(Dictionary coinPrices) {
 		
 		String strategyCoin = "ADA";
 		
@@ -22,23 +22,22 @@ public LogItem performTrade(Dictionary coinPrices) {
 		
 		
 		if (coinValue == null) {
-			LogItem errorLog = new LogItem(strategyName, "ADA", "FAIL", 0, 0, today);
-			return errorLog;
+			return new LogItem(strategyName, strategyCoin, "FAIL", 0, 0, today);
 		}
 		
 		
 		double cardanoPrice = (double) coinValue;
-		
+
+		LogItem currLogItem;
 		if (cardanoPrice < 2) {
-			
-			LogItem currLogItem = new LogItem(strategyName,"ADA", "Buy", 10, cardanoPrice, today);
-			return currLogItem;
-			
+
+			currLogItem = new LogItem(strategyName, strategyCoin, "Buy", 10, cardanoPrice, today);
+
 		}  else {
-			LogItem currLogItem = new LogItem(strategyName, "ADA", "Sell", 10, cardanoPrice, today);
-			return currLogItem;
+			currLogItem = new LogItem(strategyName, strategyCoin, "Sell", 10, cardanoPrice, today);
 		}
-		
+		return currLogItem;
+
 	}
 
 }

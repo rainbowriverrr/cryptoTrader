@@ -13,11 +13,19 @@ public class StrategyFactory {
 		switch(strategyLetter) {
 		
 		case 'A':
-			return new StrategyA();
+			return new StrategyA(strategyName);
 		
 		case 'B':
-			return new StrategyB();
-		
+			return new StrategyB(strategyName);
+
+		case 'C':
+			return new EthBtcC(strategyName);
+
+		case 'D':
+			return new DogeD(strategyName);
+
+		case 'E':
+			return new AdaE(strategyName);
 		}
 		
 		return null;
