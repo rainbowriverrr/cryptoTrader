@@ -96,10 +96,10 @@ public class MainUI extends JFrame {
 						// Iterate rows and check for a conflicting name.
 						for (int i = 0; i < dtm.getRowCount(); i++) {
 							String existingName = (String) dtm.getValueAt(i, 0); // Existing name in the current row.
-							if (i != rowChanged && !existingName.isBlank() && newValue.equals(existingName)) {
+							if (i != rowChanged && !existingName.isEmpty() && newValue.equals(existingName)) {
 								showWarning("Trading Client " + newValue + " already exists on row " + (i + 1)
 											+ ".\nPlease enter a different name or delete the row.");
-								dtm.setValueAt(null, rowChanged, 0); // Clears the conflicting name from the table.
+								dtm.setValueAt("", rowChanged, 0); // Clears the conflicting name from the table.
 								break; // Stop iterating rows when conflict is found and resolved.
 							}
 						}
