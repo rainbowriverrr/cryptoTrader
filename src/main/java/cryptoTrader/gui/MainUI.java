@@ -56,10 +56,7 @@ public class MainUI extends JFrame {
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 0);
 
 		// Adds first empty row.
-		//String[] firstRow = {"", "", "None"};
-		
-		// Adds a filled row for faster testing.
-		String[] firstRow = {"Temp", "BTC, ETH", "Strategy-A"};
+		String[] firstRow = {"", "", "None"};
 		dtm.addRow(firstRow);
 		
 		JTable table = new JTable(dtm); // UI table displays data in dtm
@@ -73,10 +70,11 @@ public class MainUI extends JFrame {
 		
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
-		strategyNames.add("Strategy-A");
-		strategyNames.add("Strategy-B");
-		strategyNames.add("Strategy-C");
-		strategyNames.add("Strategy-D");
+		strategyNames.add("BTC Strategy A");
+		strategyNames.add("ADA Strategy B");
+		strategyNames.add("ETH Strategy C");
+		strategyNames.add("DOGE Strategy D");
+		strategyNames.add("ADA Strategy E");
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
 		JComboBox<String> strategyList = new JComboBox<String>(strategyNames);
 		strategyColumn.setCellEditor(new DefaultCellEditor(strategyList));

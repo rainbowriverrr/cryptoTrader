@@ -1,7 +1,6 @@
 package cryptoTrader.utils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Calendar;
 
@@ -46,19 +45,7 @@ public class DisplayTable implements Observer {
 		
 		Object[] columnNames = {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"}; // Names of the table columns.
 		
-		//ArrayList<LogItem> log = TraderActionLog.getInstance().getLog(); TODO put back
-		
-		// Temporary fake log for testing. TODO remove
-		ArrayList<LogItem> log = new ArrayList<LogItem>();
-		LogItem i1 = new LogItem("Strategy-A", "BTC", "Buy", 200, 101.60, new Date());
-		i1.setTrader("Bob");
-		LogItem i2 = new LogItem("Strategy-B", "ETH", "Sell", 300, 69.69, new Date());
-		i2.setTrader("Sally");
-		LogItem i3 = new LogItem("Strategy-C", "DOGE", "FAIL", 0, 94.22, new Date());
-		i3.setTrader("Jimmy");
-		log.add(i1);
-		log.add(i2);
-		log.add(i3);
+		ArrayList<LogItem> log = subject.getLog();
 		
 		Object[][] data = new String[log.size()][7]; // Data of the table. Row for each log item, 7 columns.
 		Calendar cal = Calendar.getInstance(); // Calendar instance to interpret the log Date.

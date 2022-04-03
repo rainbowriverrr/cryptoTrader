@@ -146,18 +146,12 @@ public class LoginUI extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// For testing purposes, skip login if there is a command line argument.
-		// TODO remove before delivery!
-		if (args.length > 0) {
-			MainUI.getInstance().startApp();
-		} else {
 		JFrame frame = getInstance();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
+		frame.setLocationRelativeTo(null); // Moves to the middle of the screen.
 		frame.setVisible(true);
-		}
 	}
 	
 	/**
