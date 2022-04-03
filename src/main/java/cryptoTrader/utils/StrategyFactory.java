@@ -7,14 +7,16 @@ public class StrategyFactory {
 		//get the specific strategy letter from strategy name ex. "StrategyA" -> "A"
 		
 		char strategyLetter = strategyName.charAt(strategyName.length() -1);
+
+		System.out.println(strategyLetter);
 		
 		switch(strategyLetter) {
 		
 		case 'A':
-			return new StrategyA(strategyName);
+			return new StrategyA();
 		
 		case 'B':
-			return new StrategyB(strategyName);
+			return new StrategyB();
 		
 		}
 		

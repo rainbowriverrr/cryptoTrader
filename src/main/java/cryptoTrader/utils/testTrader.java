@@ -7,19 +7,13 @@ public class testTrader {
     public static void main(String[] args){
         System.out.println("Testing Trader...");
 
-        String[] coins = new String[2];
-        coins[0] = "AZAEOI";
-        coins[1] = "BTC";
-
-        String[] coins2 = new String[1];
-        coins2[0] = "ETH";
 
         TradingClient testClient = new TradingClient("Test", "AZAEOI, BTC", "StrategyA");
-        TradingClient testClient2 = new TradingClient("Test", "ETH, DOGE", "StrategyB");
+        TradingClient testClient2 = new TradingClient("Test2", "ADA, BTC", "StrategyB");
 
         ArrayList<TradingClient> clients = new ArrayList<TradingClient>();
-        //clients.add(testClient);
-        //clients.add(testClient2);
+        clients.add(testClient);
+        clients.add(testClient2);
 
         Trader.performTrades(clients);
     }

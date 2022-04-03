@@ -1,17 +1,18 @@
 package cryptoTrader.utils;
 
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class StrategyB extends Strategy {
 	
-	private String strategyName;
+	private String strategyName = "StrategyB";
 	
-	public StrategyB(String strategyName) {
-		super(strategyName);
+	public StrategyB() {
+		super();
 	}
 	
-public LogItem performTrade(Hashtable<String, Integer> coinPrices) {
+public LogItem performTrade(Dictionary coinPrices) {
 		
 		String strategyCoin = "ADA";
 		
@@ -21,7 +22,7 @@ public LogItem performTrade(Hashtable<String, Integer> coinPrices) {
 		
 		
 		if (coinValue == null) {
-			LogItem errorLog = new LogItem(strategyName, "ADA", "ERROR", 0, 0, today);
+			LogItem errorLog = new LogItem(strategyName, "ADA", "FAIL", 0, 0, today);
 			return errorLog;
 		}
 		

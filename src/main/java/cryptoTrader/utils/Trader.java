@@ -67,8 +67,12 @@ public class Trader {
 
             logs.add(client.trade(requestedCoins));
             System.out.println(requestedCoins);
-            //TODO: ui.updateLog(logs)
+            //Testing logs
+            //for( LogItem log : logs) {
+            //    System.out.println(log.toString());
+            //}
         }
+        //TODO: ui.updateLog(logs)
     }
 
 

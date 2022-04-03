@@ -7,15 +7,12 @@ public abstract class Strategy {
 	
 	private String strategyName;
 	
-	public Strategy (String strategyName) {
-		
-		this.strategyName = strategyName;
+	public Strategy () {
+
 	}
 	
 	public LogItem performTrade(Dictionary requestedCoins) {
 		return null;
-		
-		
 	}
 
 }

@@ -6,17 +6,17 @@ import java.util.Hashtable;
 
 public class StrategyA extends Strategy {
 	
-	private String strategyName;
+	private String strategyName = "StrategyA";
 	
-	public StrategyA(String strategyName) {
+	public StrategyA() {
 		
-		super(strategyName);
-		// TODO Auto-generated constructor stub
+		super();
+
 	}
 	
 	public LogItem performTrade(Dictionary requestedCoins) {
 		
-		String strategyCoin = "btc";
+		String strategyCoin = "BTC";
 		
 		Object coinValue = requestedCoins.get(strategyCoin);
 		
@@ -24,7 +24,7 @@ public class StrategyA extends Strategy {
 		
 		
 		if (coinValue == null) {
-			LogItem errorLog = new LogItem(strategyName, "BTC", "ERROR", 0, 0, today);
+			LogItem errorLog = new LogItem(strategyName, "BTC", "FAIL", 0, 0, today);
 			return errorLog;
 		}
 		

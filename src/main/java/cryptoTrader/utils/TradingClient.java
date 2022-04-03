@@ -13,7 +13,8 @@ public class TradingClient {
 	public TradingClient (String brokerName, String coinNames, String traderStrategy) {
 
 		String[] coins = coinNames.split(",");
-		for (String coin : coins) coin = coin.trim();
+		for (int i = 0; i < coins.length; i++)
+			coins[i] = coins[i].trim();
 		Strategy strat = StrategyFactory.create(traderStrategy); // TODO change to use StrategyFactory
 
 		this.brokerName = brokerName;
