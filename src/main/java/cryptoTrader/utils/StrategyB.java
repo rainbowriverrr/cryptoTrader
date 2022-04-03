@@ -6,8 +6,6 @@ import java.util.Hashtable;
 
 public class StrategyB extends Strategy {
 	
-	private String strategyName = "ADA B";
-	
 	public StrategyB(String strategyName) {
 		super(strategyName);
 	}
@@ -22,7 +20,7 @@ public class StrategyB extends Strategy {
 		
 		
 		if (coinValue == null) {
-			return new LogItem(strategyName, strategyCoin, "FAIL", 0, 0, today);
+			return new LogItem(super.getName(), strategyCoin, "FAIL", 0, 0, today);
 		}
 		
 		
@@ -31,10 +29,10 @@ public class StrategyB extends Strategy {
 		LogItem currLogItem;
 		if (cardanoPrice < 2) {
 
-			currLogItem = new LogItem(strategyName, strategyCoin, "Buy", 10, cardanoPrice, today);
+			currLogItem = new LogItem(super.getName(), strategyCoin, "Buy", 10, cardanoPrice, today);
 
 		}  else {
-			currLogItem = new LogItem(strategyName, strategyCoin, "Sell", 10, cardanoPrice, today);
+			currLogItem = new LogItem(super.getName(), strategyCoin, "Sell", 10, cardanoPrice, today);
 		}
 		return currLogItem;
 

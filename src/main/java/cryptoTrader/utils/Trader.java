@@ -15,7 +15,7 @@ public class Trader {
     private static DataFetcher fetcher;
     private static String pattern = "dd-MM-yyyy";
     private static MainUI ui;
-
+    
     public static void performTrades(ArrayList<TradingClient> clients){
 
         //Updates data fetcher and MainUI instances
@@ -65,12 +65,13 @@ public class Trader {
                 }
             }
 
-            logs.add(client.trade(requestedCoins));
-            //System.out.println(requestedCoins);
-            //Testing logs
-            //for( LogItem log : logs) {
-            //    System.out.println(log.toString());
-            //}
+            if(requestedCoins.size() != 0) {
+                logs.add(client.trade(requestedCoins));
+            }
+
+        }
+        for( LogItem log : logs) {
+            System.out.println(log.toString());
         }
         TraderActionLog.getInstance().updateLog(logs);
     }
