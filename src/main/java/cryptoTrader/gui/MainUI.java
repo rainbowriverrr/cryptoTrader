@@ -129,11 +129,32 @@ public class MainUI extends JFrame {
 			}
 		});
 		
+		// Clear All
+		JButton clearAll = new JButton("Clear All");
+		clearAll.addActionListener(e -> {
+			int currRow = dtm.getRowCount();
+			while (currRow > 0) {
+				dtm.removeRow(currRow-1);
+				currRow --;
+			}
+			
+			dtm.addRow(firstRow);
+		});
+		
+		// Export To CSV
+				JButton exportToCSV = new JButton("Export Table To CSV");
+				exportToCSV.addActionListener(e -> {
+					
+					TraderActionLog exportInstance = TraderActionLog.getInstance();
+					
+					exportInstance.writeToCSV(exportInstance);
+				});
 		// Buttons panel
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
 		buttons.add(addRow);
 		buttons.add(remRow);
+		buttons.add(clearAll);
 
 		// East panel
 		JPanel east = new JPanel();
@@ -149,6 +170,11 @@ public class MainUI extends JFrame {
 		tablePanel = new JPanel();
 		west.add(tablePanel);
 		new DisplayTable(TraderActionLog.getInstance()); // Initialize DisplayTable
+		
+		JPanel tableButtons = new JPanel();
+		tableButtons.setLayout(new BoxLayout(tableButtons, BoxLayout.X_AXIS));
+		tableButtons.add(exportToCSV);
+		west.add(tableButtons);
 		
 		// Histogram
 		histPanel = new JPanel();

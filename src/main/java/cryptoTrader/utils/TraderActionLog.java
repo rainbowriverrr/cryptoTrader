@@ -1,5 +1,7 @@
 package cryptoTrader.utils;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -35,6 +37,46 @@ public class TraderActionLog extends Subject {
 	 */
 	public ArrayList<LogItem> getLog() {
 		return log;
+	}
+	
+	public void writeToCSV(TraderActionLog currInstance) {
+		
+		ArrayList<LogItem> exportLog = currInstance.getLog();
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter ("TradingLog.csv");
+			
+			
+			StringBuilder line = new StringBuilder();
+			line.append("Trader,Strategy,CryptoCoin,Action,Quantity,Price,Date\n");
+			for (LogItem currLog : exportLog) {
+				
+				line.append(currLog.getTrader());
+				line.append(",");
+				line.append(currLog.getStrategy());
+				line.append(",");
+				line.append(currLog.getCoin());
+				line.append(",");
+				line.append(currLog.getAction());
+				line.append(",");
+				line.append(currLog.getQuantity());
+				line.append(",");
+				line.append(currLog.getPrice());
+				line.append(",");
+				line.append(currLog.getDate());
+				line.append("\n");
+				
+				System.out.println(line);
+			}
+			
+			writer.write(line.toString());
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 }
