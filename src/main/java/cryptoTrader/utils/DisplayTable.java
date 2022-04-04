@@ -39,13 +39,21 @@ public class DisplayTable implements Observer {
 		table.setEnabled(false); // Prevents user from editing the table since it is only for displaying data.
 		table.setGridColor(Color.LIGHT_GRAY);
 		table.setFillsViewportHeight(true);
+		// Set column widths
+		table.getColumnModel().getColumn(0).setPreferredWidth(110); // Trader
+		table.getColumnModel().getColumn(1).setPreferredWidth(130); // Strategy
+		table.getColumnModel().getColumn(2).setPreferredWidth(100); // Coin list
+		table.getColumnModel().getColumn(3).setPreferredWidth(60); // Action
+		table.getColumnModel().getColumn(4).setPreferredWidth(60); // Quantity
+		table.getColumnModel().getColumn(5).setPreferredWidth(100); // Price
+		table.getColumnModel().getColumn(6).setPreferredWidth(120); // Date
 		// Table is put in a scroll pane.
 		scrollPane = new JScrollPane(table);
 		scrollPane.setBorder (BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
 				"Trader Actions",
 				TitledBorder.CENTER,
 				TitledBorder.TOP));
-		scrollPane.setPreferredSize(new Dimension(650, 300));
+		scrollPane.setPreferredSize(new Dimension(680, 300));
 	}
 
 	/**

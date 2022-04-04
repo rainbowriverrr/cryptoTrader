@@ -66,13 +66,13 @@ public class MainUI extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
 				TitledBorder.CENTER, TitledBorder.TOP));
-		scrollPane.setPreferredSize(new Dimension(800, 300));
+		scrollPane.setPreferredSize(new Dimension(700, 300));
 		
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
 		strategyNames.add("BTC Strategy A");
 		strategyNames.add("ADA Strategy B");
-		strategyNames.add("ETH Strategy C");
+		strategyNames.add("ETH,BTC Strategy C");
 		strategyNames.add("DOGE Strategy D");
 		strategyNames.add("ADA Strategy E");
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
@@ -116,6 +116,8 @@ public class MainUI extends JFrame {
 		// Add row
 		JButton addRow = new JButton("Add Row");
 		addRow.addActionListener(e -> {
+			// Prevents errors caused by clicking the button while the table is being edited.
+			if (table.isEditing()) table.getCellEditor().stopCellEditing();
 			String[] newRow = {"", "", "None"};
 			dtm.addRow(newRow);
 		});
@@ -123,6 +125,8 @@ public class MainUI extends JFrame {
 		// Remove row
 		JButton remRow = new JButton("Remove Row");
 		remRow.addActionListener(e -> {
+			// Prevents errors caused by clicking the button while the table is being edited.
+			if (table.isEditing()) table.getCellEditor().stopCellEditing();
 			if (dtm.getRowCount() > 1) {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow != -1) dtm.removeRow(selectedRow);
@@ -158,6 +162,8 @@ public class MainUI extends JFrame {
 		// Perform trade
 		JButton trade = new JButton("Perform Trade");
 		trade.addActionListener(e -> {
+			// Prevents errors caused by clicking the button while the table is being edited.
+			if (table.isEditing()) table.getCellEditor().stopCellEditing();
 			// Call Trader to perform trades if the table is valid.
 			if (isValidClientTable()) {
 				updateClientList(); // Updates the list from the data in the table.
@@ -188,31 +194,30 @@ public class MainUI extends JFrame {
 		JFrame frame = getInstance();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.pack();
+		frame.setLocationRelativeTo(null); // Move to middle of the screen
 		frame.setVisible(true);
 	}
 	
 	/**
-	 * Replaces the components in tablePanel with the given component newTable.
+	 * Adds the given component to tablePanel if it has no components yet, then revalidates.
 	 * @param newTable the new component
 	 */
 	public void updateLogTable(Component newTable) {
-		tablePanel.removeAll();
-		tablePanel.add(newTable);
+		if (tablePanel.getComponents().length == 0) tablePanel.add(newTable);
 		tablePanel.revalidate();
 	}
 	
 	/**
-	 * Replaces the components in histPanel with the given component newHist.
+	 * Adds the given component to histPanel if it has no components yet, then revalidates.
 	 * @param newHist the new component
 	 */
 	public void updateHist(Component newHist) {
-		histPanel.removeAll();
-		histPanel.add(newHist);
+		if(histPanel.getComponents().length == 0) histPanel.add(newHist);
 		histPanel.revalidate();
 	}
 	
 	/**
-	 * Show a warning pop up with the given message.
+	 * Shows a warning pop up with the given message.
 	 * @param message
 	 */
 	public void showWarning(String message) {

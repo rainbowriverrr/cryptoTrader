@@ -50,7 +50,7 @@ public class DisplayHistogram implements Observer {
 		
 		// Initialize panel
 		chartPanel = new ChartPanel(hist);
-		chartPanel.setPreferredSize(new Dimension(650, 300));
+		chartPanel.setPreferredSize(new Dimension(680, 300));
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		chartPanel.setBackground(Color.white);
 	}
@@ -75,7 +75,7 @@ public class DisplayHistogram implements Observer {
 			// Fail actions are not included in the histogram.
 			if (!item.getAction().equals("FAIL")) {
 				String trader = item.getTrader();
-				String strat = item.getStrategy();
+				String strat = "Strategy " + item.getStrategy().charAt(item.getStrategy().length() - 1); // Shortened strategy name to fit the histogram
 				// Check for if the trader and strategy keys exist to determine how to add the data.
 				boolean isExistingRowKey = false;
 				List<String> rowKeys = data.getRowKeys(); // data should only ever be Strings
@@ -88,15 +88,15 @@ public class DisplayHistogram implements Observer {
 					if (key.equals(strat)) isExistingColKey = true;
 				}
 				// If trader and strategy exist, increment the existing values.
-				if (isExistingRowKey && isExistingColKey) data.incrementValue(1, item.getTrader(), item.getStrategy());
+				if (isExistingRowKey && isExistingColKey) data.incrementValue(1, trader, strat);
 				// If trader does not exist, add it with all strategies set to 0, then increment the correct strategy.
 				// This makes the histogram display all strategies, not just the ones with existing values.
 				else if (!isExistingRowKey) {
-					data.addValue(0, trader, "BTC Strategy A");
-					data.addValue(0, trader, "ADA Strategy B");
-					data.addValue(0, trader, "ETH Strategy C");
-					data.addValue(0, trader, "DOGE Strategy D");
-					data.addValue(0, trader, "ADA Strategy E");
+					data.addValue(0, trader, "Strategy A");
+					data.addValue(0, trader, "Strategy B");
+					data.addValue(0, trader, "Strategy C");
+					data.addValue(0, trader, "Strategy D");
+					data.addValue(0, trader, "Strategy E");
 					data.incrementValue(1, trader, strat);
 				}
 				// Else trader exists but strategy does not (0 actions for that strategy). Add the new data and set to 1.
