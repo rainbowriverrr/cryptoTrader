@@ -68,7 +68,7 @@ public class DisplayHistogram implements Observer {
 	 * Gets the log from TraderActionLog, creates the histogram, and passes it to MainUI.
 	 */
 	private void createHistogram() {
-		ArrayList<LogItem> log = subject.getLog(); // Log of trader actions
+		ArrayList<LogItem> log = subject.getNewLogs(); // Log of trader actions
 		
 		// Iterates the log items and adds the data to the histogram.
 		for (int i = 0; i < log.size(); i++) {

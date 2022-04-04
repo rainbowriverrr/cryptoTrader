@@ -67,7 +67,7 @@ public class DisplayTable implements Observer {
 	 * Gets the log from TraderActionLog, creates the table, and passes it to the MainUI.
 	 */
 	private void display() {
-		ArrayList<LogItem> log = subject.getLog();
+		ArrayList<LogItem> log = subject.getNewLogs();
 		
 		Calendar cal = Calendar.getInstance(); // Calendar instance to interpret the log Date.
 

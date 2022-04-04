@@ -3,6 +3,8 @@ package cryptoTrader.utils;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Represents the log of new trader actions.
@@ -11,7 +13,8 @@ import java.util.ArrayList;
 public class TraderActionLog extends Subject {
 	
 	private static TraderActionLog instance; // Single instance of TraderActionLog.
-	private ArrayList<LogItem> log = new ArrayList<LogItem>(); // List of new log items to be added to the table and histogram on the left
+	private ArrayList<LogItem> log = new ArrayList<LogItem>(); // List of all logs
+	private ArrayList<LogItem> newLogs = new ArrayList<LogItem>(); // List of new log items to be added to the table and histogram on the left
 
 	/**
 	 * Gets the single instance of TraderActionLog.
@@ -27,29 +30,35 @@ public class TraderActionLog extends Subject {
 	 * @param newLogs list of new log items
 	 */
 	public void updateLog(ArrayList<LogItem> newLog) {
-		log = newLog;
+		newLogs = newLog;
+		log.addAll(newLog);
 		notifyObservers(); // Notifies observers to create the UI log table and histogram.
 	}
-
+	
 	/**
-	 * Returns the log.
+	 * Returns all the logs.
 	 * @return list of log items
 	 */
 	public ArrayList<LogItem> getLog() {
 		return log;
 	}
+
+	/**
+	 * Returns the new logs.
+	 * @return list of new log items
+	 */
+	public ArrayList<LogItem> getNewLogs() {
+		return newLogs;
+	}
 	
-	public void writeToCSV(TraderActionLog currInstance) {
-		
-		ArrayList<LogItem> exportLog = currInstance.getLog();
+	public void writeToCSV() {
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter ("TradingLog.csv");
 			
-			
 			StringBuilder line = new StringBuilder();
 			line.append("Trader,Strategy,CryptoCoin,Action,Quantity,Price,Date\n");
-			for (LogItem currLog : exportLog) {
+			for (LogItem currLog : log) {
 				
 				line.append(currLog.getTrader());
 				line.append(",");
@@ -61,12 +70,19 @@ public class TraderActionLog extends Subject {
 				line.append(",");
 				line.append(currLog.getQuantity());
 				line.append(",");
-				line.append(currLog.getPrice());
+				line.append(String.format("%.2f", currLog.getPrice()));
 				line.append(",");
-				line.append(currLog.getDate());
-				line.append("\n");
 				
-				System.out.println(line);
+				// Builds the date String from the Date object.
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(currLog.getDate());
+				String dateStr = ""; // Date as a String
+				dateStr += cal.get(Calendar.DAY_OF_MONTH);
+				dateStr += "-" + cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+				dateStr += "-" + cal.get(Calendar.YEAR);
+				line.append(dateStr);
+				line.append("\n");
+
 			}
 			
 			writer.write(line.toString());
