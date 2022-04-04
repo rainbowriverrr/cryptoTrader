@@ -35,8 +35,7 @@ public class MainUI extends JFrame {
 
 	private static MainUI instance; // Single instance of MainUI
 	
-	private JPanel tablePanel; // Panel with the log item table.
-	private JPanel histPanel; // Panel with the histogram.
+	private JPanel west; // Panel with the log table and histogram.
 
 	private DefaultTableModel dtm; // Underlying data of the UI table.
 	
@@ -56,20 +55,23 @@ public class MainUI extends JFrame {
 		// Trading client table
 		
 		dtm = new DefaultTableModel(new Object[] { "Trading Client", "Coin List", "Strategy Name" }, 0);
-
+		
 		// Adds first empty row.
 		String[] firstRow = {"", "", "None"};
 		dtm.addRow(firstRow);
 		
-		JTable table = new JTable(dtm); // UI table displays data in dtm
+		// UI table displays data in dtm
+		JTable table = new JTable(dtm);
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.LIGHT_GRAY);
 		
+		// Table is put in a scrollPane
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Trading Client Actions",
 				TitledBorder.CENTER, TitledBorder.TOP));
-		scrollPane.setPreferredSize(new Dimension(700, 300));
+		scrollPane.setPreferredSize(new Dimension(700, 600));
 		
+		// Strategy selection drop-down menu
 		Vector<String> strategyNames = new Vector<String>();
 		strategyNames.add("None");
 		strategyNames.add("BTC Strategy A");
@@ -135,34 +137,26 @@ public class MainUI extends JFrame {
 			}
 		});
 		
-		// Buttons panel
+		// Add/remove row buttons panel
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
 		buttons.add(addRow);
 		buttons.add(remRow);
 
-		// East panel
+		// east panel with client table and buttons
 		JPanel east = new JPanel();
 		east.setLayout(new BoxLayout(east, BoxLayout.Y_AXIS));
 		east.add(scrollPane);
 		east.add(buttons);
 		
-		// West panel
-		JPanel west = new JPanel();
+		// west panel with log table and histogram
+		west = new JPanel();
 		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		west.setPreferredSize(new Dimension(700, 650));
 		
-		// Log table
-		tablePanel = new JPanel();
-		tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
-		west.add(tablePanel);
-		new DisplayTable(TraderActionLog.getInstance()); // Initialize DisplayTable
-		
-		// Histogram
-		histPanel = new JPanel();
-		histPanel.setLayout(new BoxLayout(histPanel, BoxLayout.Y_AXIS));
-		west.add(histPanel);
-		new DisplayHistogram(TraderActionLog.getInstance()); // Initialize DisplayHistogram
+		// Initialize DisplayTable and DisplayHistogram which will create the log table and histogram when needed.
+		new DisplayTable(TraderActionLog.getInstance());
+		new DisplayHistogram(TraderActionLog.getInstance());
 		
 		// Perform trade
 		JButton trade = new JButton("Perform Trade");
@@ -175,13 +169,21 @@ public class MainUI extends JFrame {
 				Trader.performTrades(clientList);
 			}
 		});
+		
+		// south panel with perform trade button
 		JPanel south = new JPanel();
 		south.add(trade);
-
-		getContentPane().add(east, BorderLayout.EAST);
+		
+		// center panel with log table, histogram, and client table.
+		JPanel center = new JPanel();
+		center.setLayout(new BoxLayout(center, BoxLayout.X_AXIS));
+		center.add(west);
+		center.add(east);
+		
+		// Add to content pane
+		getContentPane().add(center, BorderLayout.CENTER); // Components in CENTER will automatically resize to fit the window.
 		getContentPane().add(south, BorderLayout.SOUTH);
-		//getContentPane().add(west, BorderLayout.CENTER);
-		getContentPane().add(west, BorderLayout.WEST);
+		
 	}
 	
 	/**
@@ -205,21 +207,12 @@ public class MainUI extends JFrame {
 	}
 	
 	/**
-	 * Adds the given component to tablePanel if it has no components yet, then revalidates.
-	 * @param newTable the new component
+	 * Used to add/update the log table and histogram. Adds the component if it isn't there yet, then revalidates.
+	 * @param newComponent the log table or histogram
 	 */
-	public void updateLogTable(Component newTable) {
-		if (tablePanel.getComponents().length == 0) tablePanel.add(newTable);
-		tablePanel.revalidate();
-	}
-	
-	/**
-	 * Adds the given component to histPanel if it has no components yet, then revalidates.
-	 * @param newHist the new component
-	 */
-	public void updateHist(Component newHist) {
-		if(histPanel.getComponents().length == 0) histPanel.add(newHist);
-		histPanel.revalidate();
+	public void updateWest(Component newComponent) {
+		if (west.getComponents().length < 2) west.add(newComponent);
+		west.revalidate();
 	}
 	
 	/**

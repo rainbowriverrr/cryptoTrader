@@ -52,7 +52,7 @@ public class DisplayTable implements Observer {
 				"Trader Actions",
 				TitledBorder.CENTER,
 				TitledBorder.TOP));
-		scrollPane.setPreferredSize(new Dimension(680, 300));
+		scrollPane.setPreferredSize(new Dimension(700, 300));
 	}
 
 	/**
@@ -109,6 +109,6 @@ public class DisplayTable implements Observer {
 			dtm.addRow(row); // Add the new row to the table data.
 		}
 		
-		MainUI.getInstance().updateLogTable(scrollPane); // Adds the new table to the UI.
+		MainUI.getInstance().updateWest(scrollPane); // Adds the new table to the UI.
 	}
 }

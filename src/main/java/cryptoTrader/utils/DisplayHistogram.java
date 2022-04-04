@@ -48,7 +48,7 @@ public class DisplayHistogram implements Observer {
 		
 		// Initialize panel
 		chartPanel = new ChartPanel(hist);
-		chartPanel.setPreferredSize(new Dimension(680, 300));
+		chartPanel.setPreferredSize(new Dimension(700, 300));
 		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		chartPanel.setBackground(Color.white);
 	}
@@ -104,7 +104,7 @@ public class DisplayHistogram implements Observer {
 			}
 		}
 		
-		MainUI.getInstance().updateHist(chartPanel); // Adds the new histogram to the UI.
+		MainUI.getInstance().updateWest(chartPanel); // Adds the new histogram to the UI.
 		
 	}
 }
