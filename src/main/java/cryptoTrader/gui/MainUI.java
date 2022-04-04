@@ -136,12 +136,34 @@ public class MainUI extends JFrame {
 				if (selectedRow != -1) dtm.removeRow(selectedRow);
 			}
 		});
+
+		// Clear All
+		JButton clearAll = new JButton("Clear All");
+		clearAll.addActionListener(e -> {
+			int currRow = dtm.getRowCount();
+			while (currRow > 0) {
+				dtm.removeRow(currRow-1);
+				currRow --;
+			}
+			
+			dtm.addRow(firstRow);
+		});
 		
+		// Export To CSV
+				JButton exportToCSV = new JButton("Export Table To CSV");
+				exportToCSV.addActionListener(e -> {
+					
+					TraderActionLog exportInstance = TraderActionLog.getInstance();
+					
+					exportInstance.writeToCSV(exportInstance);
+				});
 		// Add/remove row buttons panel
+
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
 		buttons.add(addRow);
 		buttons.add(remRow);
+		buttons.add(clearAll);
 
 		// east panel with client table and buttons
 		JPanel east = new JPanel();
@@ -153,10 +175,16 @@ public class MainUI extends JFrame {
 		west = new JPanel();
 		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		west.setPreferredSize(new Dimension(700, 650));
-		
+
 		// Initialize DisplayTable and DisplayHistogram which will create the log table and histogram when needed.
 		new DisplayTable(TraderActionLog.getInstance());
 		new DisplayHistogram(TraderActionLog.getInstance());
+
+		JPanel tableButtons = new JPanel();
+		tableButtons.setLayout(new BoxLayout(tableButtons, BoxLayout.X_AXIS));
+		tableButtons.add(exportToCSV);
+		west.add(tableButtons);
+
 		
 		// Perform trade
 		JButton trade = new JButton("Perform Trade");
@@ -211,7 +239,7 @@ public class MainUI extends JFrame {
 	 * @param newComponent the log table or histogram
 	 */
 	public void updateWest(Component newComponent) {
-		if (west.getComponents().length < 2) west.add(newComponent);
+		if (west.getComponents().length < 3) west.add(newComponent);
 		west.revalidate();
 	}
 	

@@ -110,4 +110,5 @@ public class DisplayHistogram implements Observer {
 		MainUI.getInstance().updateWest(chartPanel); // Adds the new histogram to the UI.
 		
 	}
+	
 }
