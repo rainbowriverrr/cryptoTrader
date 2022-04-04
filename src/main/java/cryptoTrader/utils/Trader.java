@@ -25,9 +25,11 @@ public class Trader {
 
     /**
      * Returns an ArrayList of LogItems which contains both successful and failed trades.  This is static class
-     * that is called by front end components which initiates the creation of trading logs.
+     * that is called by front end components which initiates the creation of trading logs by pushing a dictionary
+     * of coin and coin price pairs to TradingClients.  After all TradingClients return their logs, the Trader
+     * updates the TraderActionLog with an ArrayList of log items.
      * @param clients an Arraylist of TradingClient objects
-     * @return log of performed trades and errors
+     * @return ArrayList\<LogItem>, log of performed trades and errors
      * @see TradingClient
      */
     public static void performTrades(ArrayList<TradingClient> clients){
@@ -88,10 +90,13 @@ public class Trader {
     }
 
 
-    /*
-    Returns true if coin is in the list coinList, otherwise, returns false
-    Case does not matter
-    */
+    /**
+     * Returns true if coin is in the list coinList, otherwise, returns false
+     * Case does not matter
+     * @param coinList List of coins to search validity from
+     * @param coin The coin whose validity is being tested
+     * @return boolean, true if the coin is valid, false if it is not valid
+     */
     private static boolean searchList(String[] coinList, String coin){
 
         for(String listItem : coinList){

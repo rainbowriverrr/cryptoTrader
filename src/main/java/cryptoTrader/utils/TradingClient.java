@@ -34,10 +34,11 @@ public class TradingClient {
 
 	/**
 	 * Pushes a dictionary of coin, price pairs to the Strategy associated with the TradingClient.
-	 * Takes the LogItem return from the Strategy, adds its brokerName, then returns it.
+	 * Takes the LogItem return from the Strategy, adds its brokerName to the LogItem, then returns it.
 	 * @param requestedCoins
 	 * @return LogItem with completed information
 	 * @see Strategy
+	 * @see Trader
 	 */
 	protected LogItem trade(Dictionary requestedCoins){
 

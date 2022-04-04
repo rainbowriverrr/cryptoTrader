@@ -11,7 +11,7 @@ public class StrategyA extends Strategy {
 
 	}
 	
-	public LogItem performTrade(Dictionary requestedCoins) {
+	protected LogItem performTrade(Dictionary requestedCoins) {
 		
 		String strategyCoin = "BTC";
 		

@@ -10,7 +10,7 @@ public class AdaE extends Strategy{
     }
 
     @Override
-    public LogItem performTrade(Dictionary requestedCoins) {
+    protected LogItem performTrade(Dictionary requestedCoins) {
 
         Object adaValue = requestedCoins.get("ADA");
         Date today = new Date();
