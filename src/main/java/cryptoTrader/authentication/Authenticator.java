@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 
 /**
  * Used to access the username and password data.
@@ -15,6 +16,7 @@ public class Authenticator implements ILogin {
 	
 	private static Authenticator instance; // Single instance of Authenticator
 	private ArrayList<String[]> userList; // List of valid username and password combinations represented as String arrays [username, password]
+	private File userFile; // File containing the usernames and password
 	
 	/**
 	 * Constructor reads the file containing valid username and password combinations and adds them all to userList.
@@ -22,7 +24,9 @@ public class Authenticator implements ILogin {
 	 */
 	private Authenticator() throws IOException {
 		userList = new ArrayList<String[]>();
-		BufferedReader reader = new BufferedReader(new FileReader("src/main/java/cryptoTrader/authentication/users.txt"));
+		userFile = new File(System.getProperty("user.home") + System.getProperty("file.separator") + "users.txt");
+		userFile.createNewFile();
+		BufferedReader reader = new BufferedReader(new FileReader(userFile));
 		String line = reader.readLine();
 		while(line != null) {
 			String[] user = new String[2]; // Username and password combination
@@ -72,11 +76,11 @@ public class Authenticator implements ILogin {
 	public boolean createProfile(String user, String pass) throws IOException {
 		if (isExistingUser(user)) return false;
 		// Writes the new profile to file.
-		BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/java/cryptoTrader/authentication/users.txt", true));
-		writer.newLine();
+		BufferedWriter writer = new BufferedWriter(new FileWriter(userFile, true));
 		writer.write(user);
 		writer.newLine();
 		writer.write(pass);
+		writer.newLine();
 		writer.close();
 		// Adds the new profile to the list in memory so it can be used without reading the file again.
 		String[] newUserCredentials = {user, pass};

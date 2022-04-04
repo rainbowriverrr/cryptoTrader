@@ -3,6 +3,7 @@ package cryptoTrader.gui;
 import java.awt.Component;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Taskbar;
 import java.awt.Color;
 
 import java.util.ArrayList;
@@ -51,7 +52,13 @@ public class MainUI extends JFrame {
 	private MainUI() {
 		// Set window title and icon
 		super("Crypto Trader");
-		setIconImage(new ImageIcon("src/main/java/cryptoTrader/gui/icon.png").getImage());
+		try {
+			// MacOS
+			Taskbar.getTaskbar().setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+		} catch (Exception e) {
+			// Windows
+			setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+		}
 
 		// Trading client table
 		

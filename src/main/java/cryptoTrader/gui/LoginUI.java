@@ -14,6 +14,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
+import java.awt.Taskbar;
 
 import java.io.IOException;
 
@@ -37,7 +38,13 @@ public class LoginUI extends JFrame {
 		
 		// Set the window title and icon.
 		super("Crypto Trader");
-		setIconImage(new ImageIcon("src/main/java/cryptoTrader/gui/icon.png").getImage());
+		try {
+			// MacOS
+			Taskbar.getTaskbar().setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+		} catch (Exception e) {
+			// Windows
+			setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+		}
 		
 		Container pane = getContentPane(); // The content pane of the login window.
 		pane.setLayout(new GridBagLayout());

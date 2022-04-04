@@ -54,7 +54,7 @@ public class TraderActionLog extends Subject {
 	public void writeToCSV() {
 		PrintWriter writer;
 		try {
-			writer = new PrintWriter ("TradingLog.csv");
+			writer = new PrintWriter (System.getProperty("user.home") + System.getProperty("file.separator") + "TradingLog.csv");
 			
 			StringBuilder line = new StringBuilder();
 			line.append("Trader,Strategy,CryptoCoin,Action,Quantity,Price,Date\n");
