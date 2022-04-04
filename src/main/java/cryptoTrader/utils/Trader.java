@@ -9,6 +9,12 @@ import java.util.Hashtable;
 
 import cryptoTrader.gui.MainUI;
 
+/**
+ * This class provides the performTrades() method which initiates the creation of log items.  This utilizes
+ * the DataFetcher and AvailableCryptoList to obtain the nessecary information that will be pushed to the
+ * TradingClients and Strategies.
+ * @author rainbowriverrr
+ */
 
 public class Trader {
 
@@ -18,9 +24,11 @@ public class Trader {
     private static MainUI ui;
 
     /**
-     * Returns an ArrayList of LogItems which contains both successful and failed trades.
+     * Returns an ArrayList of LogItems which contains both successful and failed trades.  This is static class
+     * that is called by front end components which initiates the creation of trading logs.
      * @param clients an Arraylist of TradingClient objects
      * @return log of performed trades and errors
+     * @see TradingClient
      */
     public static void performTrades(ArrayList<TradingClient> clients){
 
@@ -53,7 +61,7 @@ public class Trader {
                     //Adds a coin price pair to the client's requested coin list
                     requestedCoins.put(coin, price);
 
-                } else {
+                } /* else {
                     LogItem newLog = new LogItem();
                     newLog.setCoin(coin);
                     newLog.setTrader(client.getBrokerName());
@@ -65,7 +73,7 @@ public class Trader {
                     logs.add(newLog);
 
                     System.out.println("Invalid Coin " + coin + " for broker " + client.getBrokerName());
-                }
+                }*/
             }
 
             if(requestedCoins.size() != 0) {
