@@ -72,7 +72,7 @@ public class MainUI extends JFrame {
 		strategyNames.add("None");
 		strategyNames.add("BTC Strategy A");
 		strategyNames.add("ADA Strategy B");
-		strategyNames.add("ETH Strategy C");
+		strategyNames.add("ETH/BTC Strategy C");
 		strategyNames.add("DOGE Strategy D");
 		strategyNames.add("ADA Strategy E");
 		TableColumn strategyColumn = table.getColumnModel().getColumn(2);
