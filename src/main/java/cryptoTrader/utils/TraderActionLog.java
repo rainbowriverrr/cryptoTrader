@@ -3,13 +3,13 @@ package cryptoTrader.utils;
 import java.util.ArrayList;
 
 /**
- * Represents the log of trader actions.
+ * Represents the log of new trader actions.
  * Subject to observers DisplayTable and DisplayHistogram. Notifies observers when the log is changed.
  */
 public class TraderActionLog extends Subject {
 	
 	private static TraderActionLog instance; // Single instance of TraderActionLog.
-	private ArrayList<LogItem> log = new ArrayList<LogItem>(); // List of log items to be displayed in a table and histogram on the left
+	private ArrayList<LogItem> log = new ArrayList<LogItem>(); // List of new log items to be added to the table and histogram on the left
 
 	/**
 	 * Gets the single instance of TraderActionLog.
