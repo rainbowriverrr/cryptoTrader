@@ -21,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.ImageIcon;
 
 import cryptoTrader.utils.Trader;
 import cryptoTrader.utils.TradingClient;
@@ -48,8 +49,9 @@ public class MainUI extends JFrame {
 	 * Initializes DisplayTable and DisplayHistogram which will create the log item table and histogram when needed.
 	 */
 	private MainUI() {
-		// Set window title
+		// Set window title and icon
 		super("Crypto Trader");
+		setIconImage(new ImageIcon("src/main/java/cryptoTrader/gui/icon.png").getImage());
 
 		// Trading client table
 		
@@ -147,15 +149,18 @@ public class MainUI extends JFrame {
 		
 		// West panel
 		JPanel west = new JPanel();
+		west.setLayout(new BoxLayout(west, BoxLayout.Y_AXIS));
 		west.setPreferredSize(new Dimension(700, 650));
 		
 		// Log table
 		tablePanel = new JPanel();
+		tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.Y_AXIS));
 		west.add(tablePanel);
 		new DisplayTable(TraderActionLog.getInstance()); // Initialize DisplayTable
 		
 		// Histogram
 		histPanel = new JPanel();
+		histPanel.setLayout(new BoxLayout(histPanel, BoxLayout.Y_AXIS));
 		west.add(histPanel);
 		new DisplayHistogram(TraderActionLog.getInstance()); // Initialize DisplayHistogram
 		
@@ -175,7 +180,8 @@ public class MainUI extends JFrame {
 
 		getContentPane().add(east, BorderLayout.EAST);
 		getContentPane().add(south, BorderLayout.SOUTH);
-		getContentPane().add(west, BorderLayout.CENTER);
+		//getContentPane().add(west, BorderLayout.CENTER);
+		getContentPane().add(west, BorderLayout.WEST);
 	}
 	
 	/**

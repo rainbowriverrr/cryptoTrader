@@ -22,7 +22,6 @@ public class DisplayTable implements Observer {
 	
 	private TraderActionLog subject; // DisplayTable is observer to TraderActionLog.
 	
-	private JTable table; // The table
 	private DefaultTableModel dtm; // DTM for the table
 	private JScrollPane scrollPane; // table is in a scroll pane
 
@@ -35,7 +34,7 @@ public class DisplayTable implements Observer {
 		subject.attach(this);
 		
 		dtm = new DefaultTableModel(new Object[] {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"}, 0);
-		table = new JTable(dtm);
+		JTable table = new JTable(dtm);
 		table.setEnabled(false); // Prevents user from editing the table since it is only for displaying data.
 		table.setGridColor(Color.LIGHT_GRAY);
 		table.setFillsViewportHeight(true);

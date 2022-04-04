@@ -7,6 +7,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.ImageIcon;
 
 import java.awt.Container;
 import java.awt.GridBagLayout;
@@ -34,8 +35,9 @@ public class LoginUI extends JFrame {
 	
 	private LoginUI() {
 		
-		// Sets the window title.
+		// Set the window title and icon.
 		super("Crypto Trader");
+		setIconImage(new ImageIcon("src/main/java/cryptoTrader/gui/icon.png").getImage());
 		
 		Container pane = getContentPane(); // The content pane of the login window.
 		pane.setLayout(new GridBagLayout());

@@ -25,8 +25,6 @@ public class DisplayHistogram implements Observer {
 	
 	private TraderActionLog subject; // DisplayHistogram is observer to TraderActionLog.
 	private DefaultCategoryDataset data; // Data of the histogram
-	private CategoryPlot plot; // The plot with dataset data
-	private JFreeChart hist; // The histogram made from plot
 	private ChartPanel chartPanel; // The panel that holds the histogram
 
 	/**
@@ -39,14 +37,14 @@ public class DisplayHistogram implements Observer {
 		
 		// Initialize histogram
 		data = new DefaultCategoryDataset(); 
-		plot = new CategoryPlot();
+		CategoryPlot plot = new CategoryPlot();
 		plot.setDataset(data);
 		plot.setRenderer(new BarRenderer());
 		plot.setDomainAxis(new CategoryAxis("Strategy"));
 		NumberAxis yAxis = new NumberAxis("Actions Performed (Buy or Sell)");
 		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits()); // Integer ticks for y-axis
 		plot.setRangeAxis(yAxis);
-		hist = new JFreeChart("Actions Performed By Traders So Far", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
+		JFreeChart hist = new JFreeChart("Actions Performed By Traders So Far", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
 		
 		// Initialize panel
 		chartPanel = new ChartPanel(hist);
