@@ -2,6 +2,9 @@ package cryptoTrader.utils;
 
 import java.util.Date;
 
+/**
+ * @author rainbowriverrr
+ */
 public class LogItem {
 
     private String trader;
@@ -12,6 +15,9 @@ public class LogItem {
     private double price;
     private Date date;
 
+    /**
+     * Default constructor that initializes the LogItem fields to empty Strings, 0, and the current date.
+     */
     public LogItem(){
         this.strategy = "";
         this.trader = "";
@@ -22,6 +28,16 @@ public class LogItem {
         this.date = new Date();
     }
 
+    /**
+     * Constructor that sets all fields save for the trader.  This is used by Strategy.
+     * @param strategy
+     * @param coin
+     * @param action
+     * @param quantity
+     * @param price
+     * @param date
+     * @see Strategy
+     */
     public LogItem(String strategy, String coin, String action, int quantity, double price, Date date){
     	this.strategy = strategy;
         this.coin = coin;
@@ -87,6 +103,10 @@ public class LogItem {
         this.date = date;
     }
 
+    /**
+     * Returns a formatted String with all LogInformation
+     * @return formatted String
+     */
     public String toString(){
         String toReturn = "Trader: " + trader + "\n Strategy: " + strategy + "\n" + coin + " " + action + " " + price + " " + date.toString();
 

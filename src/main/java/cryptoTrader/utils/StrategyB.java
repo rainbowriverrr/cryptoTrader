@@ -10,7 +10,7 @@ public class StrategyB extends Strategy {
 		super(strategyName);
 	}
 	
-	public LogItem performTrade(Dictionary coinPrices) {
+	protected LogItem performTrade(Dictionary coinPrices) {
 		
 		String strategyCoin = "ADA";
 		

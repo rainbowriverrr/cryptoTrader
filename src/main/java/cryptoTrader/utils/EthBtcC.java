@@ -11,7 +11,7 @@ public class EthBtcC extends Strategy{
     }
 
     @Override
-    public LogItem performTrade(Dictionary requestedCoins) {
+    protected LogItem performTrade(Dictionary requestedCoins) {
 
         Object ethValue = requestedCoins.get("ETH");
         Object btcValue = requestedCoins.get("BTC");
