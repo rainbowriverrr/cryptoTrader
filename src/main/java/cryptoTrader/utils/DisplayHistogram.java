@@ -4,13 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.LogAxis;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.Range;
@@ -24,6 +25,10 @@ import cryptoTrader.gui.MainUI;
 public class DisplayHistogram implements Observer {
 	
 	private TraderActionLog subject; // DisplayHistogram is observer to TraderActionLog.
+	private DefaultCategoryDataset data;
+	private CategoryPlot plot;
+	private JFreeChart hist;
+	private ChartPanel chartPanel;
 
 	/**
 	 * Constructs a DisplayHistogram that observes the given subject.
@@ -32,6 +37,20 @@ public class DisplayHistogram implements Observer {
 	public DisplayHistogram(TraderActionLog subject) {
 		this.subject = subject;
 		subject.attach(this);
+		
+		data = new DefaultCategoryDataset();
+		plot = new CategoryPlot();
+		plot.setDataset(data);
+		plot.setRenderer(new BarRenderer());
+		plot.setDomainAxis(new CategoryAxis("Strategy"));
+		NumberAxis yAxis = new NumberAxis("Actions Performed (Buy or Sell)");
+		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		plot.setRangeAxis(yAxis);
+		hist = new JFreeChart("Actions Performed By Traders So Far", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
+		chartPanel = new ChartPanel(hist);
+		chartPanel.setPreferredSize(new Dimension(650, 300));
+		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		chartPanel.setBackground(Color.white);
 	}
 
 	/**
@@ -48,7 +67,25 @@ public class DisplayHistogram implements Observer {
 	private void createHistogram() {
 		ArrayList<LogItem> log = subject.getLog();
 		
-		// Example code
+		for (int i = 0; i < log.size(); i++) {
+			LogItem item = log.get(i);
+			String trader = item.getTrader();
+			String strat = item.getStrategy();
+			boolean isExistingRowKey = false;
+			List<String> rowKeys = data.getRowKeys();
+			for (String key : rowKeys) {
+				if (key.equals(trader)) isExistingRowKey = true;
+			}
+			boolean isExistingColKey = false;
+			List<String> colKeys = data.getColumnKeys();
+			for (String key : colKeys) {
+				if (key.equals(strat)) isExistingColKey = true;
+			}
+			if (isExistingRowKey && isExistingColKey) data.incrementValue(1, item.getTrader(), item.getStrategy());
+			else data.addValue(1, trader, strat);
+		}
+		
+		/* Example code
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		// Those are hard-coded values!!!! 
@@ -73,13 +110,7 @@ public class DisplayHistogram implements Observer {
 		// plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
 		// plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
 		
-		// End of example code
-		
-		JFreeChart barChart = new JFreeChart("Actions Performed By Traders So Far", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
-		ChartPanel chartPanel = new ChartPanel(barChart);
-		chartPanel.setPreferredSize(new Dimension(650, 300));
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		chartPanel.setBackground(Color.white);
+		// End of example code*/
 		
 		MainUI.getInstance().updateHist(chartPanel); // Adds the new histogram to the UI.
 		
