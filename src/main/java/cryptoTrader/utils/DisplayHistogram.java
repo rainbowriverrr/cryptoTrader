@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.border.TitledBorder;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -44,12 +45,14 @@ public class DisplayHistogram implements Observer {
 		NumberAxis yAxis = new NumberAxis("Actions Performed (Buy or Sell)");
 		yAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits()); // Integer ticks for y-axis
 		plot.setRangeAxis(yAxis);
-		JFreeChart hist = new JFreeChart("Actions Performed By Traders So Far", new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
+		JFreeChart hist = new JFreeChart(plot);
+		hist.setBackgroundPaint(Color.white);
 		
 		// Initialize panel
 		chartPanel = new ChartPanel(hist);
 		chartPanel.setPreferredSize(new Dimension(700, 300));
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		chartPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+				"Actions Performed By Traders So Far", TitledBorder.CENTER, TitledBorder.TOP));
 		chartPanel.setBackground(Color.white);
 	}
 
