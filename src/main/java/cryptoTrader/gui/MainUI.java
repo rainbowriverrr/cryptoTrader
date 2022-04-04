@@ -162,8 +162,6 @@ public class MainUI extends JFrame {
 			if (isValidClientTable()) {
 				updateClientList(); // Updates the list from the data in the table.
 				Trader.performTrades(clientList);
-				// Notify observers to create log table and histogram.
-				TraderActionLog.getInstance().notifyObservers();
 			}
 		});
 		JPanel south = new JPanel();

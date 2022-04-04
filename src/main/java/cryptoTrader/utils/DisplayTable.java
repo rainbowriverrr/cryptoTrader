@@ -60,7 +60,6 @@ public class DisplayTable implements Observer {
 	 * Gets the log from TraderActionLog, creates the table, and passes it to the MainUI.
 	 */
 	private void display() {
-		
 		ArrayList<LogItem> log = subject.getLog();
 		
 		Calendar cal = Calendar.getInstance(); // Calendar instance to interpret the log Date.
@@ -89,7 +88,7 @@ public class DisplayTable implements Observer {
 				row[5] = "Null";
 			} else {
 				row[4] = String.valueOf(item.getQuantity());
-				row[5] = String.valueOf(item.getPrice());
+				row[5] = String.format("%.2f", item.getPrice());
 			}
 			
 			// Builds the date String from the Date object.
