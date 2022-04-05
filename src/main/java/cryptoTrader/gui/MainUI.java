@@ -26,9 +26,6 @@ import javax.swing.ImageIcon;
 
 import cryptoTrader.utils.Trader;
 import cryptoTrader.utils.TradingClient;
-import cryptoTrader.utils.TraderActionLog;
-import cryptoTrader.utils.DisplayHistogram;
-import cryptoTrader.utils.DisplayTable;
 
 public class MainUI extends JFrame {
 

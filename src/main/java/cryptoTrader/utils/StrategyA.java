@@ -2,7 +2,6 @@ package cryptoTrader.utils;
 
 import java.util.Date;
 import java.util.Dictionary;
-import java.util.Hashtable;
 
 public class StrategyA extends Strategy {
 	
@@ -11,7 +10,7 @@ public class StrategyA extends Strategy {
 
 	}
 	
-	protected LogItem performTrade(Dictionary requestedCoins) {
+	protected LogItem performTrade(Dictionary<String, Double> requestedCoins) {
 		
 		String strategyCoin = "BTC";
 		

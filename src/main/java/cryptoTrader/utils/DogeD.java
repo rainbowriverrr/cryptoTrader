@@ -22,7 +22,7 @@ public class DogeD extends Strategy{
      *                       being the coin price.
      * @return LogItem with result of strategy logic.
      */
-    protected LogItem performTrade(Dictionary requestedCoins) {
+    protected LogItem performTrade(Dictionary<String, Double> requestedCoins) {
 
         Object dogeValue = requestedCoins.get("DOGE");
         Date today = new Date();

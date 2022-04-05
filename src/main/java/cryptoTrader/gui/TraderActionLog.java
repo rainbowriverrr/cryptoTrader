@@ -1,10 +1,11 @@
-package cryptoTrader.utils;
+package cryptoTrader.gui;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import cryptoTrader.utils.LogItem;
 
 /**
  * Represents the log of new trader actions.
@@ -26,8 +27,8 @@ public class TraderActionLog extends Subject {
 	}
 	
 	/**
-	 * Replaces log with newLog.
-	 * @param newLogs list of new log items
+	 * Replaces newLogs with newLog.
+	 * @param newLog list of new log items
 	 */
 	public void updateLog(ArrayList<LogItem> newLog) {
 		newLogs = newLog;

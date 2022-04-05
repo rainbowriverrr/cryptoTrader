@@ -1,8 +1,7 @@
-package cryptoTrader.utils;
+package cryptoTrader.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import cryptoTrader.gui.MainUI;
+import cryptoTrader.utils.LogItem;
 
 /**
  * Used to generate the histogram.

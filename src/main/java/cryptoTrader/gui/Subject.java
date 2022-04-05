@@ -1,4 +1,4 @@
-package cryptoTrader.utils;
+package cryptoTrader.gui;
 
 import java.util.List;
 import java.util.ArrayList;

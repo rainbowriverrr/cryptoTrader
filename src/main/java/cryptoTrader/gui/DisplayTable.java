@@ -1,4 +1,4 @@
-package cryptoTrader.utils;
+package cryptoTrader.gui;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.border.TitledBorder;
 
-import cryptoTrader.gui.MainUI;
+import cryptoTrader.utils.LogItem;
 
 /**
  * Used to generate the UI table of log items.

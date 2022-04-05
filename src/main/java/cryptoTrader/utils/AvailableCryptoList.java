@@ -87,10 +87,9 @@ public class AvailableCryptoList {
 				JsonArray jsonArray = new JsonParser().parse(inline).getAsJsonArray();
 				int size = jsonArray.size();
 				
-				String name, id, symbol;
+				String id, symbol;
 				for (int i = 0; i < size; i++) {
 					JsonObject object = jsonArray.get(i).getAsJsonObject();
-					name = object.get("name").getAsString();
 					id = object.get("id").getAsString();
 					symbol = object.get("symbol").getAsString();
 					

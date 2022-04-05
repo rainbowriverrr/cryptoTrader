@@ -23,7 +23,7 @@ public abstract class Strategy {
 	 *                       being the coin price.
 	 * @return LogItem with result of strategy logic.
 	 */
-	protected LogItem performTrade(Dictionary requestedCoins) {
+	protected LogItem performTrade(Dictionary<String, Double> requestedCoins) {
 		return null;
 	}
 

@@ -1,6 +1,5 @@
 package cryptoTrader.utils;
 
-import java.util.ArrayList;
 import java.util.Dictionary;
 
 /**
@@ -40,7 +39,7 @@ public class TradingClient {
 	 * @see Strategy
 	 * @see Trader
 	 */
-	protected LogItem trade(Dictionary requestedCoins){
+	protected LogItem trade(Dictionary<String, Double> requestedCoins){
 
 		LogItem toReturn = traderStrategy.performTrade(requestedCoins);
 

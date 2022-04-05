@@ -2,7 +2,6 @@ package cryptoTrader.utils;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.Hashtable;
 
 public class testTrader {
@@ -20,7 +19,7 @@ public class testTrader {
         Trader.performTrades(clients);
 
         Strategy testStrategy = new EthBtcC("Testing");
-        Dictionary requestedCoins = new Hashtable();
+        Dictionary<String, Double> requestedCoins = new Hashtable<String, Double>();
         requestedCoins.put("BTC", 50000.00);
         requestedCoins.put("ETH", 4500.00);
         LogItem testLog = testStrategy.performTrade(requestedCoins);

@@ -1,4 +1,4 @@
-package cryptoTrader.utils;
+package cryptoTrader.gui;
 
 /**
  * Implemented by observers.
