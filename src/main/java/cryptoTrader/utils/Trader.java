@@ -75,9 +75,7 @@ public class Trader {
                 }*/
             }
 
-            if(requestedCoins.size() != 0) {
-                logs.add(client.trade(requestedCoins));
-            }
+            logs.add(client.trade(requestedCoins));
 
         }
         for( LogItem log : logs) {
