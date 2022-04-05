@@ -5,10 +5,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import javax.imageio.ImageIO;
+import java.io.IOException;
 
 import java.awt.Container;
 import java.awt.GridBagLayout;
@@ -16,8 +17,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
 import java.awt.Taskbar;
-
-import java.io.IOException;
 
 import cryptoTrader.authentication.Authenticator;
 
@@ -41,12 +40,12 @@ public class LoginUI extends JFrame {
 		super("Crypto Trader");
 		try {
 			// MacOS
-			Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResourceAsStream("icon.png")));
+			Taskbar.getTaskbar().setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
 		} catch (Exception e) {
 			// Windows
 			try {
-				setIconImage(ImageIO.read(getClass().getResourceAsStream("icon.png")));
-			} catch (IOException ex) {
+				setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+			} catch (Exception ex) {
 				
 			}
 		}
