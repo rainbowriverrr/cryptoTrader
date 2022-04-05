@@ -7,7 +7,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
+
+import javax.imageio.ImageIO;
 
 import java.awt.Container;
 import java.awt.GridBagLayout;
@@ -40,10 +41,14 @@ public class LoginUI extends JFrame {
 		super("Crypto Trader");
 		try {
 			// MacOS
-			Taskbar.getTaskbar().setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+			Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResourceAsStream("icon.png")));
 		} catch (Exception e) {
 			// Windows
-			setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+			try {
+				setIconImage(ImageIO.read(getClass().getResourceAsStream("icon.png")));
+			} catch (IOException ex) {
+				
+			}
 		}
 		
 		Container pane = getContentPane(); // The content pane of the login window.

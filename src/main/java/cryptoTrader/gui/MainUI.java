@@ -4,11 +4,13 @@ import java.awt.Component;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Taskbar;
+import java.io.IOException;
 import java.awt.Color;
 
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
@@ -22,7 +24,6 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.ImageIcon;
 
 import cryptoTrader.utils.Trader;
 import cryptoTrader.utils.TradingClient;
@@ -54,10 +55,14 @@ public class MainUI extends JFrame {
 		super("Crypto Trader");
 		try {
 			// MacOS
-			Taskbar.getTaskbar().setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+			Taskbar.getTaskbar().setIconImage(ImageIO.read(getClass().getResourceAsStream("icon.png")));
 		} catch (Exception e) {
 			// Windows
-			setIconImage(new ImageIcon(getClass().getResource("icon.png")).getImage());
+			try {
+				setIconImage(ImageIO.read(getClass().getResourceAsStream("icon.png")));
+			} catch (IOException ex) {
+				
+			}
 		}
 
 		// Trading client table
